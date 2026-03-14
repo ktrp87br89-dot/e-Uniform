@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            var(--primary-color): #1a1a1a; 
+            --primary-color: #1a1a1a; 
             --primary-hover: #333333;
             --accent-color: #d4af37; 
             --bg-color: #f8f9fa;
@@ -63,9 +63,15 @@
         .history-text { font-size: 13px; color: #495057; white-space: pre-line; background: #f8f9fa; padding: 10px; border-radius: 6px; margin-top: 8px; }
         
         /* แท็บ Admin */
-        .admin-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; }
-        .admin-tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: 600; color: var(--text-muted); }
+        .admin-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; font-size: 14px; }
+        .admin-tab { flex: 1; text-align: center; padding: 12px 5px; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
         .admin-tab.active { color: #1a1a1a; border-bottom: 3px solid var(--accent-color); margin-bottom: -2px; }
+        
+        /* สไตล์ตาราง Report */
+        .report-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+        .report-table th { background: #1a1a1a; color: white; padding: 12px 10px; font-weight: 500; }
+        .report-table td { padding: 12px 10px; border-bottom: 1px solid #dee2e6; }
+        .report-table tr:last-child td { border-bottom: none; }
     </style>
 </head>
 <body>
@@ -183,12 +189,13 @@
         <div id="admin-dashboard-view">
             <div class="header">
                 <h1>ADMIN DASHBOARD</h1>
-                <p>ระบบจัดการสต๊อกและประวัติ</p>
+                <p>จัดการสต๊อก ประวัติ และรายงานสรุป</p>
             </div>
             
             <div class="admin-tabs">
                 <div class="admin-tab active" id="tab-stock" onclick="switchAdminTab('stock')">📦 คลังสินค้า</div>
                 <div class="admin-tab" id="tab-history" onclick="switchAdminTab('history')">📜 ประวัติสั่งซื้อ</div>
+                <div class="admin-tab" id="tab-report" onclick="switchAdminTab('report')">📊 สรุปรายงาน AI</div>
             </div>
 
             <div class="content" style="padding-top: 0;">
@@ -197,44 +204,69 @@
                     <div class="admin-box">
                         <h3 style="margin-top:0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="adminFormTitle">➕ เพิ่ม/แก้ไข รายการสินค้า</h3>
                         <div class="grid-2">
-                            <div class="form-group">
-                                <label>รหัสสินค้า (SKU)</label>
-                                <input type="text" id="itemId">
-                            </div>
-                            <div class="form-group">
-                                <label>ชื่อรายการ</label>
-                                <input type="text" id="itemName">
-                            </div>
+                            <div class="form-group"><label>รหัสสินค้า (SKU)</label><input type="text" id="itemId"></div>
+                            <div class="form-group"><label>ชื่อรายการ</label><input type="text" id="itemName"></div>
                         </div>
                         <div class="grid-2">
-                            <div class="form-group">
-                                <label>หน่วยนับ</label>
-                                <input type="text" id="itemUnit" value="ตัว">
-                            </div>
-                            <div class="form-group">
-                                <label>จำนวนสต๊อกรวม</label>
-                                <input type="number" id="itemStock" min="0">
-                            </div>
+                            <div class="form-group"><label>หน่วยนับ</label><input type="text" id="itemUnit" value="ตัว"></div>
+                            <div class="form-group"><label>จำนวนสต๊อกรวม</label><input type="number" id="itemStock" min="0"></div>
                         </div>
-                        <div class="form-group">
-                            <label>URL รูปภาพตัวอย่างสินค้า</label>
-                            <input type="text" id="itemImage">
-                        </div>
+                        <div class="form-group"><label>URL รูปภาพ</label><input type="text" id="itemImage"></div>
                         <div class="action-btns" style="margin-top: 15px;">
                             <button onclick="saveItemAdmin()" id="btnSaveAdmin" class="btn btn-submit" style="background-color: #1a1a1a;">💾 บันทึก</button>
                             <button onclick="clearAdminForm()" class="btn" style="background-color: #ced4da; width: 40%; color: #495057;">ล้างค่า</button>
                         </div>
                     </div>
-
                     <h3 style="font-size: 16px;">📦 สต๊อกสินค้าคงเหลือ</h3>
                     <div id="adminStockContainer"></div>
                 </div>
 
                 <div id="admin-section-history" style="display: none;">
                     <div class="admin-box" style="background: #fff;">
-                        <h3 style="margin-top:0; font-size: 16px; color: #dc3545;">🚨 ตรวจสอบและยกเลิกบิล (50 รายการล่าสุด)</h3>
-                        <p style="font-size: 13px; color: #6c757d;">หากพนักงานเบิกผิด สามารถกดยกเลิกเพื่อคืนสต๊อกอัตโนมัติได้ที่นี่</p>
+                        <h3 style="margin-top:0; font-size: 16px; color: #dc3545;">🚨 ตรวจสอบและยกเลิกบิล</h3>
                         <div id="adminHistoryContainer"></div>
+                    </div>
+                </div>
+
+                <div id="admin-section-report" style="display: none;">
+                    <div class="admin-box" style="background: #fff; padding: 20px;">
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin:0; font-size: 16px; color: #1a1a1a;">🤖 รายงานวิเคราะห์คลังสินค้า</h3>
+                            <select id="reportMonthFilter" onchange="generateReport()" style="width: auto; padding: 6px 10px; font-weight: 600; background: #f8f9fa;">
+                                <option value="all">ทั้งหมด (All Time)</option>
+                                </select>
+                        </div>
+
+                        <div class="grid-2" style="margin-bottom: 20px;">
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; text-align: center;">
+                                <div style="font-size: 13px; color: #6c757d;">ยอดสั่งซื้อทั้งหมด</div>
+                                <div style="font-size: 24px; font-weight: 600; color: #1a1a1a;" id="reportTotalOrders">0 <span style="font-size: 14px; font-weight: normal;">บิล</span></div>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; text-align: center;">
+                                <div style="font-size: 13px; color: #6c757d;">รวมจำนวนเสื้อที่เบิก</div>
+                                <div style="font-size: 24px; font-weight: 600; color: #1a1a1a;" id="reportTotalItems">0 <span style="font-size: 14px; font-weight: normal;">ตัว</span></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #fff9e6; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; border: 1px solid #ffeeba;" id="aiInsightBox">
+                            ✨ <b>AI Insight:</b> กำลังวิเคราะห์ข้อมูล...
+                        </div>
+
+                        <h3 style="font-size: 15px; margin-bottom: 10px; color: #1a1a1a;">📊 รายละเอียดเบิก-จ่าย แยกตามรายการ</h3>
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">รายการเสื้อ</th>
+                                    <th style="text-align: center;">ยอดเดิมรวม</th>
+                                    <th style="text-align: center;">เบิกไป</th>
+                                    <th style="text-align: center;">คงเหลือ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody">
+                                </tbody>
+                        </table>
+
                     </div>
                 </div>
 
@@ -246,17 +278,27 @@
 
     <script>
         // ⚠️ วาง URL Web App ของคุณที่นี่ครับ
-        const API_URL = "https://script.google.com/macros/s/AKfycbzGHRECc0XPT2UnpsDUJUtys0QrbLldz1qvDfeD3zCcvw36YjTM2BGOwmCRScu3UWFM/exec"; 
+        const API_URL = "YOUR_WEBAPP_URL_HERE"; 
         
+        let globalItems = [];
+        let globalHistory = [];
+
         window.onload = function() { fetchItems(); };
 
         function fetchItems() {
             fetch(API_URL)
                 .then(response => response.json())
                 .then(data => {
-                    renderItems(data.items);
-                    renderAdminStock(data.items);
-                    renderAdminHistory(data.history);
+                    globalItems = data.items;
+                    globalHistory = data.history;
+                    
+                    renderItems(globalItems);
+                    renderAdminStock(globalItems);
+                    renderAdminHistory(globalHistory);
+                    
+                    // เตรียมข้อมูลสำหรับ Report
+                    populateMonthFilter();
+                    generateReport();
                 })
                 .catch(error => console.error("Error:", error));
         }
@@ -324,7 +366,7 @@
             .finally(() => { submitBtn.innerText = "ยืนยันการสั่งซื้อ"; submitBtn.disabled = false; });
         }
 
-        // --- ส่วนของแอดมิน (จัดการสต๊อก) ---
+        // --- ส่วนของแอดมิน (จัดการสต๊อก & ประวัติ) ---
         function renderAdminStock(items) {
             const container = document.getElementById("adminStockContainer");
             container.innerHTML = "";
@@ -344,14 +386,12 @@
             });
         }
 
-        // --- ส่วนของแอดมิน (ประวัติและยกเลิกบิล) ---
         function renderAdminHistory(historyRecords) {
             const container = document.getElementById("adminHistoryContainer");
             container.innerHTML = "";
             if (historyRecords.length === 0) { container.innerHTML = '<div class="loading-text">ยังไม่มีประวัติการเบิก</div>'; return; }
 
             historyRecords.forEach(rec => {
-                // แปลงเวลาให้ดูง่าย
                 let dateStr = new Date(rec.timestamp).toLocaleString('th-TH');
                 container.innerHTML += `
                 <div class="admin-list-item" style="border-left: 4px solid #d4af37;">
@@ -366,23 +406,146 @@
         }
 
         function cancelOrder(orderId, rowIdx) {
-            if(!confirm(`⚠️ คำเตือน!\nคุณกำลังจะ "ยกเลิกบิล ${orderId}"\nสินค้าทั้งหมดในบิลนี้จะถูกคืนเข้าสต๊อกอัตโนมัติ ยืนยันหรือไม่?`)) return;
-
-            const payload = { action: "cancel_order", orderId: orderId, rowIdx: rowIdx };
-
-            fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
+            if(!confirm(`⚠️ ยืนยันการยกเลิกบิล ${orderId} และคืนสินค้าเข้าสต๊อก?`)) return;
+            fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "cancel_order", orderId: orderId, rowIdx: rowIdx }) })
             .then(res => res.json())
             .then(data => {
-                if(data.status === "success") {
-                    alert("✅ " + data.message);
-                    fetchItems(); // โหลดหน้าเว็บใหม่เพื่อดูสต๊อกที่อัปเดต
-                } else {
-                    alert("❌ เกิดข้อผิดพลาด: " + data.message);
-                }
+                if(data.status === "success") { alert("✅ " + data.message); fetchItems(); } 
+                else { alert("❌ เกิดข้อผิดพลาด: " + data.message); }
             });
         }
 
-        // --- UI & Admin Form ---
+        // ==========================================
+        // 🚀 ระบบสรุปรายงาน AI (AI Report)
+        // ==========================================
+        
+        // 1. ดึงเดือนที่มีการสั่งซื้อมาสร้าง Dropdown
+        function populateMonthFilter() {
+            let select = document.getElementById("reportMonthFilter");
+            select.innerHTML = '<option value="all">ทั้งหมด (All Time)</option>';
+            
+            let months = new Set();
+            globalHistory.forEach(rec => {
+                let d = new Date(rec.timestamp);
+                let monthKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0');
+                months.add(monthKey);
+            });
+
+            let sortedMonths = Array.from(months).sort().reverse();
+            const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+            
+            sortedMonths.forEach(m => {
+                let [year, month] = m.split("-");
+                let label = monthNames[parseInt(month) - 1] + " " + year;
+                select.innerHTML += `<option value="${m}">${label}</option>`;
+            });
+        }
+
+        // 2. คำนวณสรุปยอดทั้งหมด
+        function generateReport() {
+            const filter = document.getElementById("reportMonthFilter").value;
+            let itemStats = {};
+            
+            // เตรียมกล่องเก็บข้อมูลของแต่ละรายการ
+            globalItems.forEach(item => {
+                itemStats[item.name] = { 
+                    original: 0, 
+                    deductedAllTime: 0, 
+                    deductedPeriod: 0, 
+                    remaining: parseInt(item.stock), 
+                    unit: item.unit 
+                };
+            });
+
+            // วนลูปประวัติทั้งหมด เพื่อหา "ยอดเดิมรวม" (สต๊อกปัจจุบัน + เบิกไปทั้งหมด)
+            globalHistory.forEach(rec => {
+                if (rec.rawItems) {
+                    try {
+                        let items = JSON.parse(rec.rawItems);
+                        items.forEach(i => {
+                            if (itemStats[i.name]) itemStats[i.name].deductedAllTime += parseInt(i.qty);
+                        });
+                    } catch(e) {}
+                }
+            });
+
+            // กำหนดค่ายอดเดิม
+            for (let key in itemStats) {
+                itemStats[key].original = itemStats[key].remaining + itemStats[key].deductedAllTime;
+            }
+
+            // กรองประวัติเฉพาะเดือนที่เลือก
+            let filteredHistory = globalHistory.filter(rec => {
+                if (filter === "all") return true;
+                let d = new Date(rec.timestamp);
+                return (d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0')) === filter;
+            });
+
+            let totalOrders = filteredHistory.length;
+            let totalItemsDeducted = 0;
+
+            // วนลูปหา "ยอดเบิกในช่วงเวลาที่เลือก"
+            filteredHistory.forEach(rec => {
+                if (rec.rawItems) {
+                    try {
+                        let items = JSON.parse(rec.rawItems);
+                        items.forEach(i => {
+                            if (itemStats[i.name]) {
+                                itemStats[i.name].deductedPeriod += parseInt(i.qty);
+                                totalItemsDeducted += parseInt(i.qty);
+                            }
+                        });
+                    } catch(e) {}
+                }
+            });
+
+            // อัปเดตตัวเลขการ์ด
+            document.getElementById("reportTotalOrders").innerHTML = `${totalOrders} <span style="font-size: 14px; font-weight: normal;">บิล</span>`;
+            document.getElementById("reportTotalItems").innerHTML = `${totalItemsDeducted} <span style="font-size: 14px; font-weight: normal;">ตัว</span>`;
+
+            // วาดตาราง & หาไอเทมขายดีสำหรับ AI
+            let tbody = document.getElementById("reportTableBody");
+            tbody.innerHTML = "";
+            let maxDeducted = 0;
+            let topItem = "-";
+
+            for (let key in itemStats) {
+                let stat = itemStats[key];
+                
+                // หาตัวท็อป
+                if (stat.deductedPeriod > maxDeducted) { maxDeducted = stat.deductedPeriod; topItem = key; }
+
+                // โชว์เฉพาะของที่เคยมีในระบบ
+                if (stat.original > 0) {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight: 500;">${key}</td>
+                            <td style="text-align: center; color: #6c757d;">${stat.original}</td>
+                            <td style="text-align: center; font-weight: 600; color: #dc3545;">${stat.deductedPeriod}</td>
+                            <td style="text-align: center; font-weight: 600; color: #198754;">${stat.remaining}</td>
+                        </tr>
+                    `;
+                }
+            }
+
+            // สร้างคำแนะนำ AI
+            let aiBox = document.getElementById("aiInsightBox");
+            if (totalOrders === 0) {
+                aiBox.innerHTML = "✨ <b>AI Insight:</b> ยังไม่มีข้อมูลการทำรายการในรอบบิลที่เลือกครับ";
+            } else {
+                let insightText = `✨ <b>AI Insight:</b> เสื้อรุ่นที่ฮิตที่สุดคือ <b>${topItem}</b> มีการเบิกไปถึง ${maxDeducted} ${itemStats[topItem].unit} `;
+                let topItemRemaining = itemStats[topItem] ? itemStats[topItem].remaining : 0;
+                
+                if (topItemRemaining <= 10) {
+                    insightText += `<br>⚠️ <b>แจ้งเตือน:</b> สต๊อกตอนนี้เหลือเพียง ${topItemRemaining} ${itemStats[topItem].unit} แนะนำให้ <b>รีบดำเนินการสั่งผลิตเพิ่ม</b> ด่วนครับ!`;
+                } else {
+                    insightText += `✅ สต๊อกปัจจุบันยังมีเพียงพอสำหรับการใช้งานครับ`;
+                }
+                aiBox.innerHTML = insightText;
+            }
+        }
+
+        // --- UI & Admin Form พื้นฐาน ---
         function editItem(item) {
             document.getElementById("itemId").value = item.id;
             document.getElementById("itemId").readOnly = true; 
@@ -405,32 +568,21 @@
             const id = document.getElementById("itemId").value;
             const name = document.getElementById("itemName").value;
             if(!id || !name) return alert("กรุณากรอกรหัสและชื่อรายการ");
-
-            const payload = {
-                action: "save_item",
-                item: { id: id, name: name, unit: document.getElementById("itemUnit").value || "ตัว", stock: document.getElementById("itemStock").value || 0, image: document.getElementById("itemImage").value || "" }
-            };
-
+            const payload = { action: "save_item", item: { id: id, name: name, unit: document.getElementById("itemUnit").value || "ตัว", stock: document.getElementById("itemStock").value || 0, image: document.getElementById("itemImage").value || "" } };
             fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === "success") { alert("✅ " + data.message); clearAdminForm(); fetchItems(); }
-            });
+            .then(res => res.json()).then(data => { if(data.status === "success") { alert("✅ " + data.message); clearAdminForm(); fetchItems(); } });
         }
 
         function deleteItem(itemId, itemName) {
             if(!confirm(`ต้องการลบ "${itemName}" ออกจากระบบ?`)) return;
             fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "delete_item", itemId: itemId }) })
-            .then(res => res.json())
-            .then(data => { if(data.status === "success") { alert("🗑️ " + data.message); fetchItems(); } });
+            .then(res => res.json()).then(data => { if(data.status === "success") { alert("🗑️ " + data.message); fetchItems(); } });
         }
 
         function switchAdminTab(tab) {
-            document.getElementById('tab-stock').classList.remove('active');
-            document.getElementById('tab-history').classList.remove('active');
-            document.getElementById('admin-section-stock').style.display = 'none';
-            document.getElementById('admin-section-history').style.display = 'none';
-
+            document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#admin-dashboard-view > .content > div').forEach(el => el.style.display = 'none');
+            
             document.getElementById('tab-' + tab).classList.add('active');
             document.getElementById('admin-section-' + tab).style.display = 'block';
         }
