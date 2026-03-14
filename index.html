@@ -3,82 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบเบิกซื้อเสื้อบริษัท (e-Uniform)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>ระบบเบิกซื้อเสื้อบริษัท (e-Uniform) - Majestic Gold</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1a1a1a; 
-            --primary-hover: #333333;
-            --accent-color: #d4af37; 
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #212529;
-            --text-muted: #6c757d;
-            --border-color: #dee2e6;
-            --danger-color: #dc3545;
+            /* 👑 Majestic Gold Theme Palette */
+            --primary-color: #D4AF37; /* สีทอง Majestic Gold */
+            --primary-hover: #B8860B; /* สีทองเข้มเวลาเอาเมาส์ชี้ */
+            --secondary-color: #0F0F0F; /* สีดำลึก Obsidian Black สำหรับไฮไลท์ */
+            --bg-color: #FBFBF9; /* สีขาวมุก Alabaster สำหรับพื้นหลังเว็บ */
+            --card-bg: #FFFFFF; /* สีขาวบริสุทธิ์สำหรับกล่องเนื้อหา */
+            --text-main: #1A1A1A; /* สีตัวอักษรหลัก (ดำเทา เพื่อให้อ่านง่าย) */
+            --text-muted: #7A6B53; /* สีเทาอมทอง สำหรับข้อความรอง */
+            --border-color: #E8D8BA; /* สีขอบสีทองอ่อนๆ */
+            --danger-color: #8B0000; /* สีแดงเข้ม สำหรับปุ่มลบ/ยกเลิก ให้ดูพรีเมียม */
+            --success-color: #1A5A22; /* สีเขียวเข้มหรูหรา */
         }
         body { font-family: 'Prompt', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 650px; background: var(--card-bg); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); overflow: hidden; position: relative; border: 1px solid #eee; }
+        .app-container { width: 100%; max-width: 650px; background: var(--card-bg); border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); overflow: hidden; position: relative; border: 1px solid var(--border-color); }
         
-        /* ย้ายปุ่ม Admin ขึ้นด้านบน */
-        .header { background-color: #1a1a1a; color: white; padding: 30px 20px; text-align: center; border-bottom: 3px solid var(--accent-color); position: relative; }
-        .admin-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 6px; font-family: 'Prompt'; font-size: 12px; cursor: pointer; transition: 0.3s; }
-        .admin-btn-top:hover { background: rgba(255,255,255,0.3); }
+        /* 👑 Header สีดำตัดทอง */
+        .header { background-color: var(--secondary-color); color: var(--primary-color); padding: 35px 20px; text-align: center; border-bottom: 4px solid var(--primary-color); position: relative; }
+        .admin-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 6px 12px; border-radius: 6px; font-family: 'Prompt'; font-size: 12px; cursor: pointer; transition: 0.3s; }
+        .admin-btn-top:hover { background: var(--primary-color); color: var(--secondary-color); font-weight: 600; }
 
-        .header h1 { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: 1px; }
-        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.8; }
+        .header h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.8; font-weight: 300; letter-spacing: 1px; color: #E8D8BA; }
         .content { padding: 35px 30px; }
         
-        .section-title { font-size: 16px; font-weight: 600; color: #1a1a1a; margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
+        /* 👑 Form Styles */
+        .section-title { font-size: 16px; font-weight: 600; color: var(--secondary-color); margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: "✦"; color: var(--primary-color); }
+        
         .form-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
-        input[type="text"], input[type="password"], input[type="number"], select { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Prompt'; font-size: 14px; transition: 0.3s; background-color: #fdfdfd; }
-        input:focus, select:focus { border-color: var(--accent-color); outline: none; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: var(--text-main); }
+        input[type="text"], input[type="password"], input[type="number"], select { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Prompt'; font-size: 14px; transition: 0.3s; background-color: #FFFFFF; color: var(--text-main); }
+        input:focus, select:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
 
-        /* แถบแยกสี (Category Tabs) */
-        .category-tabs { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
-        .category-tab { padding: 8px 16px; background: #f8f9fa; border: 1px solid var(--border-color); border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.3s; color: var(--text-muted); }
-        .category-tab:hover { border-color: #1a1a1a; color: #1a1a1a; }
-        .category-tab.active { background: #1a1a1a; color: white; border-color: #1a1a1a; font-weight: 500; }
-        .category-tabs::-webkit-scrollbar { display: none; } /* ซ่อนแถบเลื่อนแนวนอน */
+        /* 👑 แถบแยกสี (Category Tabs) */
+        .category-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .category-tab { padding: 8px 18px; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.3s; color: var(--text-muted); font-weight: 500; }
+        .category-tab:hover { border-color: var(--primary-color); color: var(--secondary-color); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.1); }
+        .category-tab.active { background: var(--primary-color); color: var(--secondary-color); border-color: var(--primary-color); font-weight: 600; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
+        .category-tabs::-webkit-scrollbar { display: none; }
 
+        /* 👑 Item Cards */
         .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-        .item-card { display: flex; align-items: center; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; background: #fff; }
-        .item-card img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; margin-right: 18px; border: 1px solid #eee; }
+        .item-card { display: flex; align-items: center; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; background: #FFFFFF; transition: all 0.3s; }
+        .item-card:hover { border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.08); transform: translateY(-2px); }
+        .item-card img { width: 75px; height: 75px; object-fit: cover; border-radius: 6px; margin-right: 18px; border: 1px solid var(--border-color); padding: 2px; }
         .item-info { flex-grow: 1; }
-        .item-name { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+        .item-name { font-weight: 600; font-size: 16px; margin-bottom: 4px; color: var(--secondary-color); }
         .item-stock { font-size: 13px; color: var(--text-muted); }
-        .item-qty { width: 90px !important; text-align: center; font-weight: 500; }
+        .item-qty { width: 90px !important; text-align: center; font-weight: 600; border-color: var(--border-color) !important; color: var(--secondary-color); background: #FDFDFB !important; }
+        .item-qty:focus { background: #FFF !important; }
         
-        .btn { width: 100%; color: white; padding: 15px; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Prompt'; }
-        .btn-submit { background-color: #1a1a1a; }
-        .btn-submit:hover { background-color: #333333; }
-        .btn-submit:disabled { background-color: #adb5bd; cursor: not-allowed; }
+        /* 👑 Buttons (ปุ่มสีทอง ตัวอักษรสีดำ) */
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Prompt'; transition: all 0.3s; letter-spacing: 0.5px; text-transform: uppercase; }
+        .btn-submit { background-color: var(--primary-color); color: var(--secondary-color); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
+        .btn-submit:hover { background-color: var(--primary-hover); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); transform: translateY(-1px); }
+        .btn-submit:disabled { background-color: var(--border-color); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
         
         #admin-login-view, #admin-dashboard-view { display: none; }
-        .loading-text { text-align: center; padding: 20px; color: var(--text-muted); font-size: 14px; }
+        .loading-text { text-align: center; padding: 20px; color: var(--primary-color); font-size: 14px; font-weight: 500; letter-spacing: 1px; }
 
-        /* Admin Styles */
-        .admin-box { background: #f8f9fa; border: 1px solid var(--border-color); padding: 25px; border-radius: 8px; margin-bottom: 30px; }
-        .admin-list-item { display: flex; flex-direction: column; padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 12px; background: white; }
+        /* 👑 Admin Styles */
+        .admin-box { background: #FFFFFF; border: 1px solid var(--border-color); padding: 25px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .admin-list-item { display: flex; flex-direction: column; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 12px; background: #FFFFFF; transition: 0.3s; }
+        .admin-list-item:hover { border-color: var(--primary-color); }
         .admin-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
         .action-btns { display: flex; gap: 8px; }
-        .btn-small { padding: 6px 10px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; color: white; font-family: 'Prompt'; }
-        .btn-edit { background-color: var(--text-muted); }
-        .btn-delete { background-color: var(--danger-color); }
-        .history-text { font-size: 13px; color: #495057; white-space: pre-line; background: #f8f9fa; padding: 10px; border-radius: 6px; margin-top: 8px; }
         
-        /* แท็บ Admin */
+        /* ปุ่มเล็กในหน้าแอดมิน */
+        .btn-small { padding: 6px 12px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; color: #FFFFFF; font-family: 'Prompt'; font-weight: 500; }
+        .btn-edit { background-color: var(--text-muted); }
+        .btn-edit:hover { background-color: var(--primary-color); color: var(--secondary-color); }
+        .btn-delete { background-color: var(--danger-color); }
+        .history-text { font-size: 13px; color: var(--text-muted); white-space: pre-line; background: var(--bg-color); padding: 12px; border-radius: 6px; margin-top: 8px; border: 1px dashed var(--border-color); }
+        
+        /* 👑 แท็บ Admin */
         .admin-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; font-size: 14px; }
         .admin-tab { flex: 1; text-align: center; padding: 12px 5px; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
-        .admin-tab.active { color: #1a1a1a; border-bottom: 3px solid var(--accent-color); margin-bottom: -2px; }
+        .admin-tab:hover { color: var(--primary-hover); }
+        .admin-tab.active { color: var(--secondary-color); border-bottom: 3px solid var(--primary-color); margin-bottom: -2px; }
         
-        .report-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
-        .report-table th { background: #1a1a1a; color: white; padding: 12px 10px; font-weight: 500; }
-        .report-table td { padding: 12px 10px; border-bottom: 1px solid #dee2e6; }
+        /* 👑 สไตล์ตาราง Report */
+        .report-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; background: white; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+        .report-table th { background: var(--secondary-color); color: var(--primary-color); padding: 14px 10px; font-weight: 500; letter-spacing: 0.5px; }
+        .report-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+        .report-table tr:hover td { background: rgba(212, 175, 55, 0.03); }
+        .report-table tr:last-child td { border-bottom: none; }
+        
+        /* สรุปตัวเลข */
+        .summary-card { background: #FFFFFF; padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .summary-card .label { font-size: 13px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-card .value { font-size: 28px; font-weight: 700; color: var(--primary-color); margin-top: 5px; text-shadow: 1px 1px 0px rgba(0,0,0,0.1); }
+        
+        /* กล่อง AI */
+        .ai-box { background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.02) 100%); color: var(--secondary-color); padding: 18px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; border: 1px solid var(--primary-color); line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -87,15 +112,15 @@
         
         <div id="user-view">
             <div class="header">
-                <button type="button" class="admin-btn-top" onclick="switchView('admin-login-view')">⚙️ Admin</button>
-                <h1>CORPORATE UNIFORM</h1>
-                <p>ระบบเบิกซื้อเสื้อบริษัท (e-Uniform)</p>
+                <button type="button" class="admin-btn-top" onclick="switchView('admin-login-view')">✦ ADMIN</button>
+                <h1>MAJESTIC UNIFORM</h1>
+                <p>Premium Corporate Wardrobe System</p>
             </div>
             
             <div class="content">
                 <form id="uniformForm" onsubmit="submitForm(event)">
                     
-                    <div class="section-title">ข้อมูลส่วนตัว</div>
+                    <div class="section-title">ข้อมูลผู้ทำรายการ</div>
                     <div class="form-group">
                         <label>ชื่อ-นามสกุล *</label>
                         <input type="text" id="fullName" required placeholder="ระบุชื่อ-นามสกุลผู้เบิก">
@@ -126,7 +151,7 @@
                         <input type="text" id="otherDepartment" placeholder="พิมพ์ชื่อแผนก">
                     </div>
 
-                    <div class="section-title">รายละเอียดเสื้อที่ต้องการ</div>
+                    <div class="section-title">รายละเอียดสินค้า</div>
                     <div class="grid-2">
                         <div class="form-group">
                             <label>เพศ *</label>
@@ -155,18 +180,18 @@
                         <input type="text" id="otherSize" placeholder="ระบุไซส์อื่นๆ ที่ต้องการ">
                     </div>
 
-                    <div class="section-title">เลือกรายการที่ต้องการเบิกซื้อ</div>
+                    <div class="section-title">คอลเลกชันเครื่องแต่งกาย</div>
                     
                     <div class="category-tabs" id="colorTabs">
                         <div class="category-tab active" onclick="filterColor('all', this)">รวมทั้งหมด</div>
-                        <div class="category-tab" onclick="filterColor('เหลือง', this)">🟡 เหลือง</div>
-                        <div class="category-tab" onclick="filterColor('น้ำเงิน', this)">🔵 น้ำเงิน</div>
-                        <div class="category-tab" onclick="filterColor('เขียว', this)">🟢 เขียว</div>
-                        <div class="category-tab" onclick="filterColor('ขาว', this)">⚪️ ขาว</div>
+                        <div class="category-tab" onclick="filterColor('เหลือง', this)">🟡 สีเหลือง</div>
+                        <div class="category-tab" onclick="filterColor('น้ำเงิน', this)">🔵 สีน้ำเงิน</div>
+                        <div class="category-tab" onclick="filterColor('เขียว', this)">🟢 สีเขียว</div>
+                        <div class="category-tab" onclick="filterColor('ขาว', this)">⚪️ สีขาว</div>
                     </div>
 
                     <div class="item-list" id="itemListContainer">
-                        <div class="loading-text">⏳ กำลังโหลดรายการ...</div>
+                        <div class="loading-text">✦ กำลังโหลดคอลเลกชัน...</div>
                     </div>
 
                     <button type="submit" id="submitBtn" class="btn btn-submit">ยืนยันการสั่งซื้อ</button>
@@ -176,7 +201,8 @@
 
         <div id="admin-login-view">
             <div class="header">
-                <h1>ADMIN LOGIN</h1>
+                <h1>MAJESTIC ADMIN</h1>
+                <p>System Management</p>
             </div>
             <div class="content">
                 <div class="form-group">
@@ -185,31 +211,31 @@
                 </div>
                 <button onclick="loginAdmin()" class="btn btn-submit">เข้าสู่ระบบ</button>
                 <div style="text-align: center; margin-top: 25px;">
-                    <a class="admin-link" style="color:var(--text-muted); cursor:pointer;" onclick="switchView('user-view')">← กลับไปหน้าทำรายการ</a>
+                    <a class="admin-link" style="color:var(--text-muted); cursor:pointer; font-size: 13px;" onclick="switchView('user-view')">← กลับไปหน้าทำรายการ</a>
                 </div>
             </div>
         </div>
 
         <div id="admin-dashboard-view">
             <div class="header">
-                <h1>ADMIN DASHBOARD</h1>
-                <p>จัดการสต๊อก ประวัติ และรายงานสรุป</p>
+                <h1>MAJESTIC DASHBOARD</h1>
+                <p>จัดการคลังสินค้า ประวัติ และ AI Report</p>
             </div>
             
             <div class="admin-tabs">
                 <div class="admin-tab active" id="tab-stock" onclick="switchAdminTab('stock')">📦 คลังสินค้า</div>
                 <div class="admin-tab" id="tab-history" onclick="switchAdminTab('history')">📜 ประวัติ</div>
-                <div class="admin-tab" id="tab-report" onclick="switchAdminTab('report')">📊 รายงาน AI</div>
+                <div class="admin-tab" id="tab-report" onclick="switchAdminTab('report')">✦ รายงาน AI</div>
             </div>
 
             <div class="content" style="padding-top: 0;">
                 
                 <div id="admin-section-stock">
                     <div class="admin-box">
-                        <h3 style="margin-top:0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="adminFormTitle">➕ เพิ่ม/แก้ไข รายการสินค้า</h3>
+                        <h3 style="margin-top:0; font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--secondary-color);" id="adminFormTitle">✦ เพิ่ม/แก้ไข รายการสินค้า</h3>
                         <div class="grid-2">
                             <div class="form-group"><label>รหัสสินค้า (SKU)</label><input type="text" id="itemId"></div>
-                            <div class="form-group"><label>ชื่อรายการ (เช่น เสื้อเหลือง)</label><input type="text" id="itemName"></div>
+                            <div class="form-group"><label>ชื่อรายการ</label><input type="text" id="itemName"></div>
                         </div>
                         <div class="grid-2">
                             <div class="form-group"><label>หน่วยนับ</label><input type="text" id="itemUnit" value="ตัว"></div>
@@ -217,46 +243,49 @@
                         </div>
                         <div class="form-group"><label>URL รูปภาพ</label><input type="text" id="itemImage"></div>
                         <div class="action-btns" style="margin-top: 15px;">
-                            <button onclick="saveItemAdmin()" id="btnSaveAdmin" class="btn btn-submit" style="background-color: #1a1a1a;">💾 บันทึก</button>
-                            <button onclick="clearAdminForm()" class="btn" style="background-color: #ced4da; width: 40%; color: #495057;">ล้างค่า</button>
+                            <button onclick="saveItemAdmin()" id="btnSaveAdmin" class="btn btn-submit">💾 บันทึกข้อมูล</button>
+                            <button onclick="clearAdminForm()" class="btn" style="background-color: transparent; border: 1px solid var(--text-muted); width: 40%; color: var(--text-muted);">ล้างค่า</button>
                         </div>
                     </div>
-                    <h3 style="font-size: 16px;">📦 สต๊อกสินค้าคงเหลือ</h3>
+                    <h3 style="font-size: 16px; color: var(--secondary-color);">📦 สต๊อกสินค้าคงเหลือ</h3>
                     <div id="adminStockContainer"></div>
                 </div>
 
                 <div id="admin-section-history" style="display: none;">
-                    <div class="admin-box" style="background: #fff;">
-                        <h3 style="margin-top:0; font-size: 16px; color: #dc3545;">🚨 ตรวจสอบและยกเลิกบิล</h3>
+                    <div class="admin-box">
+                        <h3 style="margin-top:0; font-size: 16px; color: var(--danger-color);">🚨 ตรวจสอบและยกเลิกบิล</h3>
                         <div id="adminHistoryContainer"></div>
                     </div>
                 </div>
 
                 <div id="admin-section-report" style="display: none;">
-                    <div class="admin-box" style="background: #fff; padding: 20px;">
+                    <div class="admin-box">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 style="margin:0; font-size: 16px; color: #1a1a1a;">🤖 รายงานวิเคราะห์คลังสินค้า</h3>
-                            <select id="reportMonthFilter" onchange="generateReport()" style="width: auto; padding: 6px 10px; font-weight: 600; background: #f8f9fa;">
+                            <h3 style="margin:0; font-size: 16px; color: var(--secondary-color);">✦ รายงานวิเคราะห์คลังสินค้า</h3>
+                            <select id="reportMonthFilter" onchange="generateReport()" style="width: auto; padding: 6px 10px; font-weight: 600; border-color: var(--border-color);">
                                 <option value="all">ทั้งหมด (All Time)</option>
                             </select>
                         </div>
+                        
                         <div class="grid-2" style="margin-bottom: 20px;">
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; text-align: center;">
-                                <div style="font-size: 13px; color: #6c757d;">ยอดสั่งซื้อทั้งหมด</div>
-                                <div style="font-size: 24px; font-weight: 600; color: #1a1a1a;" id="reportTotalOrders">0 <span style="font-size: 14px; font-weight: normal;">บิล</span></div>
+                            <div class="summary-card">
+                                <div class="label">ยอดสั่งซื้อทั้งหมด</div>
+                                <div class="value" id="reportTotalOrders">0 <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">บิล</span></div>
                             </div>
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; text-align: center;">
-                                <div style="font-size: 13px; color: #6c757d;">รวมจำนวนเสื้อที่เบิก</div>
-                                <div style="font-size: 24px; font-weight: 600; color: #1a1a1a;" id="reportTotalItems">0 <span style="font-size: 14px; font-weight: normal;">ตัว</span></div>
+                            <div class="summary-card">
+                                <div class="label">รวมสินค้าที่เบิก</div>
+                                <div class="value" id="reportTotalItems">0 <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">ชิ้น</span></div>
                             </div>
                         </div>
-                        <div style="background: #fff9e6; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; border: 1px solid #ffeeba;" id="aiInsightBox">
-                            ✨ <b>AI Insight:</b> กำลังวิเคราะห์ข้อมูล...
+                        
+                        <div class="ai-box" id="aiInsightBox">
+                            ✦ <b>AI Insight:</b> กำลังวิเคราะห์ข้อมูล...
                         </div>
+                        
                         <table class="report-table">
                             <thead>
                                 <tr>
-                                    <th style="text-align: left;">รายการเสื้อ</th>
+                                    <th style="text-align: left;">รายการสินค้า</th>
                                     <th style="text-align: center;">ยอดเดิม</th>
                                     <th style="text-align: center;">เบิกไป</th>
                                     <th style="text-align: center;">คงเหลือ</th>
@@ -267,7 +296,7 @@
                     </div>
                 </div>
 
-                <button onclick="switchView('user-view')" class="btn" style="background-color: #dc3545; margin-top: 20px;">🚪 ออกจากระบบ</button>
+                <button onclick="switchView('user-view')" class="btn" style="background-color: var(--secondary-color); color: var(--primary-color); border: 1px solid var(--primary-color); margin-top: 20px;">🚪 ออกจากระบบ</button>
             </div>
         </div>
 
@@ -279,7 +308,7 @@
         
         let globalItems = [];
         let globalHistory = [];
-        let currentColorFilter = 'all'; // ตัวแปรเก็บค่าสีที่กำลังเลือก
+        let currentColorFilter = 'all'; 
 
         window.onload = function() { fetchItems(); };
 
@@ -289,26 +318,19 @@
                 .then(data => {
                     globalItems = data.items;
                     globalHistory = data.history;
-                    
-                    renderItems(); // โหลดรายการโดยใช้ Filter ล่าสุด
+                    renderItems(); 
                     renderAdminStock(globalItems);
                     renderAdminHistory(globalHistory);
-                    
                     populateMonthFilter();
                     generateReport();
                 })
                 .catch(error => console.error("Error:", error));
         }
 
-        // --- ส่วนของการกรองสี (ใหม่) ---
         function filterColor(colorKeyword, element) {
             currentColorFilter = colorKeyword;
-            
-            // อัปเดตสีปุ่ม Tab
             document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
             element.classList.add('active');
-            
-            // สั่งเรนเดอร์รายการสินค้าใหม่
             renderItems();
         }
 
@@ -316,27 +338,25 @@
             const container = document.getElementById("itemListContainer");
             container.innerHTML = ""; 
 
-            // ตรวจสอบการกรองสี
             let displayItems = globalItems;
             if (currentColorFilter !== 'all') {
-                // ค้นหาคำว่า เหลือง, น้ำเงิน, เขียว, ขาว ในชื่อรายการสินค้า
                 displayItems = globalItems.filter(item => item.name.includes(currentColorFilter));
             }
 
             if (displayItems.length === 0) { 
-                container.innerHTML = `<div class="loading-text">ไม่มีรายการสินค้าในหมวดหมู่นี้ครับ</div>`; 
+                container.innerHTML = `<div class="loading-text" style="color:var(--text-muted);">ไม่มีคอลเลกชันในหมวดหมู่นี้ครับ</div>`; 
                 return; 
             }
 
             displayItems.forEach((item) => {
-                const imgUrl = item.image ? item.image : `https://via.placeholder.com/150/f8f9fa/1a1a1a?text=${item.name}`;
+                const imgUrl = item.image ? item.image : `https://via.placeholder.com/150/0F0F0F/D4AF37?text=${item.name}`;
                 const isOutOfStock = item.stock <= 0;
                 container.innerHTML += `
                     <div class="item-card" style="${isOutOfStock ? 'opacity: 0.6;' : ''}">
                         <img src="${imgUrl}" alt="${item.name}">
                         <div class="item-info">
                             <div class="item-name">${item.name}</div>
-                            <div class="item-stock" style="${isOutOfStock ? 'color: #dc3545;' : 'color: #198754; font-weight: 500;'}">
+                            <div class="item-stock" style="${isOutOfStock ? 'color: var(--danger-color);' : 'color: var(--success-color); font-weight: 500;'}">
                                 ${isOutOfStock ? 'สินค้าหมด' : 'คงเหลือ: ' + item.stock + ' ' + item.unit}
                             </div>
                         </div>
@@ -357,7 +377,7 @@
                 if (qty > 0) itemsDataArray.push({ name: input.getAttribute('data-name'), qty: qty });
             });
 
-            if (itemsDataArray.length === 0) return alert("กรุณาระบุจำนวนเสื้อครับ");
+            if (itemsDataArray.length === 0) return alert("กรุณาระบุจำนวนสินค้าครับ");
 
             const payload = {
                 action: "request_items", 
@@ -365,20 +385,19 @@
                 department: document.getElementById("department").value,
                 otherDepartment: document.getElementById("otherDepartment").value,
                 gender: document.getElementById("gender").value,
-                // นำตัวเลือกสี (Color) ออกจากฟอร์มหลัก เพราะใช้ Tab กรองจากรายการสินค้าแทนแล้ว
                 color: "ระบุจากรายการ", 
                 size: document.getElementById("size").value,
                 otherSize: document.getElementById("otherSize").value,
                 itemsDataArray: itemsDataArray
             };
 
-            submitBtn.innerText = "⏳ กำลังดำเนินการ..."; submitBtn.disabled = true;
+            submitBtn.innerText = "✦ กำลังดำเนินการ..."; submitBtn.disabled = true;
 
             fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
             .then(res => res.json())
             .then(data => {
                 if (data.status === "success") {
-                    alert("✅ บันทึกบิลเรียบร้อยแล้ว!");
+                    alert("✦ บันทึกบิลเรียบร้อยแล้ว!");
                     document.getElementById("uniformForm").reset(); 
                     checkDepartment(); checkSize(); fetchItems(); 
                 }
@@ -386,7 +405,7 @@
             .finally(() => { submitBtn.innerText = "ยืนยันการสั่งซื้อ"; submitBtn.disabled = false; });
         }
 
-        // --- ส่วนของแอดมิน (จัดการสต๊อก & ประวัติ) ---
+        // --- ส่วนของแอดมิน ---
         function renderAdminStock(items) {
             const container = document.getElementById("adminStockContainer");
             container.innerHTML = "";
@@ -395,13 +414,13 @@
                 container.innerHTML += `
                 <div class="admin-list-item">
                     <div class="admin-item-header">
-                        <div style="font-weight: 600;">[${item.id}] ${item.name}</div>
+                        <div style="font-weight: 600; color: var(--secondary-color);">[${item.id}] ${item.name}</div>
                         <div class="action-btns">
                             <button onclick='editItem(${itemJson})' class="btn-small btn-edit">✏️ แก้ไข</button>
                             <button onclick="deleteItem('${item.id}', '${item.name}')" class="btn-small btn-delete">🗑️ ลบ</button>
                         </div>
                     </div>
-                    <div style="font-size: 13px; color: #6c757d;">สต๊อก: <strong style="color:#198754; font-size: 15px;">${item.stock}</strong> ${item.unit}</div>
+                    <div style="font-size: 13px; color: var(--text-muted);">สต๊อก: <strong style="color:var(--success-color); font-size: 15px;">${item.stock}</strong> ${item.unit}</div>
                 </div>`;
             });
         }
@@ -409,17 +428,17 @@
         function renderAdminHistory(historyRecords) {
             const container = document.getElementById("adminHistoryContainer");
             container.innerHTML = "";
-            if (historyRecords.length === 0) { container.innerHTML = '<div class="loading-text">ยังไม่มีประวัติการเบิก</div>'; return; }
+            if (historyRecords.length === 0) { container.innerHTML = '<div class="loading-text">ยังไม่มีประวัติการทำรายการ</div>'; return; }
 
             historyRecords.forEach(rec => {
                 let dateStr = new Date(rec.timestamp).toLocaleString('th-TH');
                 container.innerHTML += `
-                <div class="admin-list-item" style="border-left: 4px solid #d4af37;">
+                <div class="admin-list-item" style="border-left: 4px solid var(--primary-color);">
                     <div class="admin-item-header">
-                        <div style="font-weight: 600; font-size: 14px;">บิล: ${rec.orderId}</div>
+                        <div style="font-weight: 600; font-size: 14px; color: var(--secondary-color);">บิล: ${rec.orderId}</div>
                         <button onclick="cancelOrder('${rec.orderId}', ${rec.rowIdx})" class="btn-small btn-delete">❌ ยกเลิกบิล</button>
                     </div>
-                    <div style="font-size: 13px; color: #6c757d; margin-bottom: 5px;">📅 ${dateStr} | 👤 ${rec.name}</div>
+                    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 5px;">📅 ${dateStr} | 👤 ${rec.name}</div>
                     <div class="history-text">${rec.summary}</div>
                 </div>`;
             });
@@ -429,7 +448,7 @@
             if(!confirm(`⚠️ ยืนยันการยกเลิกบิล ${orderId} และคืนสินค้าเข้าสต๊อก?`)) return;
             fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "cancel_order", orderId: orderId, rowIdx: rowIdx }) })
             .then(res => res.json())
-            .then(data => { if(data.status === "success") { alert("✅ " + data.message); fetchItems(); } else { alert("❌ เกิดข้อผิดพลาด"); } });
+            .then(data => { if(data.status === "success") { alert("✦ " + data.message); fetchItems(); } else { alert("❌ เกิดข้อผิดพลาด"); } });
         }
 
         // --- ระบบสรุปรายงาน AI (AI Report) ---
@@ -477,8 +496,8 @@
                 }
             });
 
-            document.getElementById("reportTotalOrders").innerHTML = `${totalOrders} <span style="font-size: 14px; font-weight: normal;">บิล</span>`;
-            document.getElementById("reportTotalItems").innerHTML = `${totalItemsDeducted} <span style="font-size: 14px; font-weight: normal;">ตัว</span>`;
+            document.getElementById("reportTotalOrders").innerHTML = `${totalOrders} <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">บิล</span>`;
+            document.getElementById("reportTotalItems").innerHTML = `${totalItemsDeducted} <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">ชิ้น</span>`;
 
             let tbody = document.getElementById("reportTableBody");
             tbody.innerHTML = "";
@@ -488,22 +507,22 @@
                 let stat = itemStats[key];
                 if (stat.deductedPeriod > maxDeducted) { maxDeducted = stat.deductedPeriod; topItem = key; }
                 if (stat.original > 0) {
-                    tbody.innerHTML += `<tr><td style="font-weight: 500;">${key}</td><td style="text-align: center; color: #6c757d;">${stat.original}</td><td style="text-align: center; font-weight: 600; color: #dc3545;">${stat.deductedPeriod}</td><td style="text-align: center; font-weight: 600; color: #198754;">${stat.remaining}</td></tr>`;
+                    tbody.innerHTML += `<tr><td style="font-weight: 500;">${key}</td><td style="text-align: center; color: var(--text-muted);">${stat.original}</td><td style="text-align: center; font-weight: 600; color: var(--danger-color);">${stat.deductedPeriod}</td><td style="text-align: center; font-weight: 600; color: var(--success-color);">${stat.remaining}</td></tr>`;
                 }
             }
 
             let aiBox = document.getElementById("aiInsightBox");
-            if (totalOrders === 0) { aiBox.innerHTML = "✨ <b>AI Insight:</b> ยังไม่มีข้อมูลการทำรายการครับ"; } 
+            if (totalOrders === 0) { aiBox.innerHTML = "✦ <b>AI Insight:</b> ยังไม่มีข้อมูลการทำรายการครับ"; } 
             else {
-                let insightText = `✨ <b>AI Insight:</b> เสื้อรุ่นที่ฮิตที่สุดคือ <b>${topItem}</b> มีการเบิกไปถึง ${maxDeducted} ${itemStats[topItem].unit} `;
+                let insightText = `✦ <b>AI Insight:</b> สินค้ายอดนิยมสูงสุดคือ <b>${topItem}</b> มีการเบิกจ่ายไปแล้ว ${maxDeducted} ${itemStats[topItem].unit} `;
                 let topItemRemaining = itemStats[topItem] ? itemStats[topItem].remaining : 0;
-                if (topItemRemaining <= 10) insightText += `<br>⚠️ <b>แจ้งเตือน:</b> สต๊อกตอนนี้เหลือเพียง ${topItemRemaining} ตัว แนะนำให้ <b>รีบดำเนินการสั่งผลิตเพิ่ม</b> ด่วนครับ!`;
-                else insightText += `✅ สต๊อกปัจจุบันยังมีเพียงพอสำหรับการใช้งานครับ`;
+                if (topItemRemaining <= 10) insightText += `<br><span style="color:var(--danger-color);">⚠️ <b>คำแนะนำ:</b> สต๊อกเหลือน้อยกว่ากำหนด (${topItemRemaining} ชิ้น) ควรพิจารณาสั่งผลิตเพิ่มครับ</span>`;
+                else insightText += `<br>✅ สภาพคล่องของสต๊อกอยู่ในเกณฑ์มาตรฐานครับ`;
                 aiBox.innerHTML = insightText;
             }
         }
 
-        // --- UI & Admin Form พื้นฐาน ---
+        // --- UI & Admin Form ---
         function editItem(item) {
             document.getElementById("itemId").value = item.id;
             document.getElementById("itemId").readOnly = true; 
@@ -528,7 +547,7 @@
             if(!id || !name) return alert("กรุณากรอกรหัสและชื่อรายการ");
             const payload = { action: "save_item", item: { id: id, name: name, unit: document.getElementById("itemUnit").value || "ตัว", stock: document.getElementById("itemStock").value || 0, image: document.getElementById("itemImage").value || "" } };
             fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
-            .then(res => res.json()).then(data => { if(data.status === "success") { alert("✅ " + data.message); clearAdminForm(); fetchItems(); } });
+            .then(res => res.json()).then(data => { if(data.status === "success") { alert("✦ " + data.message); clearAdminForm(); fetchItems(); } });
         }
 
         function deleteItem(itemId, itemName) {
