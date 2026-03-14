@@ -19,7 +19,12 @@
         }
         body { font-family: 'Prompt', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 650px; background: var(--card-bg); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); overflow: hidden; position: relative; border: 1px solid #eee; }
-        .header { background-color: #1a1a1a; color: white; padding: 30px 20px; text-align: center; border-bottom: 3px solid var(--accent-color); }
+        
+        /* ย้ายปุ่ม Admin ขึ้นด้านบน */
+        .header { background-color: #1a1a1a; color: white; padding: 30px 20px; text-align: center; border-bottom: 3px solid var(--accent-color); position: relative; }
+        .admin-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 6px; font-family: 'Prompt'; font-size: 12px; cursor: pointer; transition: 0.3s; }
+        .admin-btn-top:hover { background: rgba(255,255,255,0.3); }
+
         .header h1 { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: 1px; }
         .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.8; }
         .content { padding: 35px 30px; }
@@ -33,6 +38,13 @@
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
 
+        /* แถบแยกสี (Category Tabs) */
+        .category-tabs { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .category-tab { padding: 8px 16px; background: #f8f9fa; border: 1px solid var(--border-color); border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.3s; color: var(--text-muted); }
+        .category-tab:hover { border-color: #1a1a1a; color: #1a1a1a; }
+        .category-tab.active { background: #1a1a1a; color: white; border-color: #1a1a1a; font-weight: 500; }
+        .category-tabs::-webkit-scrollbar { display: none; } /* ซ่อนแถบเลื่อนแนวนอน */
+
         .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
         .item-card { display: flex; align-items: center; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; background: #fff; }
         .item-card img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; margin-right: 18px; border: 1px solid #eee; }
@@ -45,9 +57,6 @@
         .btn-submit { background-color: #1a1a1a; }
         .btn-submit:hover { background-color: #333333; }
         .btn-submit:disabled { background-color: #adb5bd; cursor: not-allowed; }
-        
-        .admin-footer { text-align: center; padding: 15px; border-top: 1px solid var(--border-color); background: #f8f9fa; }
-        .admin-link { color: var(--text-muted); font-size: 13px; text-decoration: none; cursor: pointer; }
         
         #admin-login-view, #admin-dashboard-view { display: none; }
         .loading-text { text-align: center; padding: 20px; color: var(--text-muted); font-size: 14px; }
@@ -67,11 +76,9 @@
         .admin-tab { flex: 1; text-align: center; padding: 12px 5px; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
         .admin-tab.active { color: #1a1a1a; border-bottom: 3px solid var(--accent-color); margin-bottom: -2px; }
         
-        /* สไตล์ตาราง Report */
         .report-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
         .report-table th { background: #1a1a1a; color: white; padding: 12px 10px; font-weight: 500; }
         .report-table td { padding: 12px 10px; border-bottom: 1px solid #dee2e6; }
-        .report-table tr:last-child td { border-bottom: none; }
     </style>
 </head>
 <body>
@@ -80,6 +87,7 @@
         
         <div id="user-view">
             <div class="header">
+                <button type="button" class="admin-btn-top" onclick="switchView('admin-login-view')">⚙️ Admin</button>
                 <h1>CORPORATE UNIFORM</h1>
                 <p>ระบบเบิกซื้อเสื้อบริษัท (e-Uniform)</p>
             </div>
@@ -119,23 +127,13 @@
                     </div>
 
                     <div class="section-title">รายละเอียดเสื้อที่ต้องการ</div>
-                    <div class="grid-3">
+                    <div class="grid-2">
                         <div class="form-group">
                             <label>เพศ *</label>
                             <select id="gender" required>
                                 <option value="">-- เลือก --</option>
                                 <option value="ชาย">ชาย</option>
                                 <option value="หญิง">หญิง</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>สี *</label>
-                            <select id="color" required>
-                                <option value="">-- เลือก --</option>
-                                <option value="เหลือง">เหลือง</option>
-                                <option value="น้ำเงิน">น้ำเงิน</option>
-                                <option value="เขียว">เขียว</option>
-                                <option value="ขาว">ขาว</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -158,15 +156,21 @@
                     </div>
 
                     <div class="section-title">เลือกรายการที่ต้องการเบิกซื้อ</div>
+                    
+                    <div class="category-tabs" id="colorTabs">
+                        <div class="category-tab active" onclick="filterColor('all', this)">รวมทั้งหมด</div>
+                        <div class="category-tab" onclick="filterColor('เหลือง', this)">🟡 เหลือง</div>
+                        <div class="category-tab" onclick="filterColor('น้ำเงิน', this)">🔵 น้ำเงิน</div>
+                        <div class="category-tab" onclick="filterColor('เขียว', this)">🟢 เขียว</div>
+                        <div class="category-tab" onclick="filterColor('ขาว', this)">⚪️ ขาว</div>
+                    </div>
+
                     <div class="item-list" id="itemListContainer">
                         <div class="loading-text">⏳ กำลังโหลดรายการ...</div>
                     </div>
 
                     <button type="submit" id="submitBtn" class="btn btn-submit">ยืนยันการสั่งซื้อ</button>
                 </form>
-            </div>
-            <div class="admin-footer">
-                <a class="admin-link" onclick="switchView('admin-login-view')">⚙️ เข้าสู่ระบบ Admin</a>
             </div>
         </div>
 
@@ -181,7 +185,7 @@
                 </div>
                 <button onclick="loginAdmin()" class="btn btn-submit">เข้าสู่ระบบ</button>
                 <div style="text-align: center; margin-top: 25px;">
-                    <a class="admin-link" onclick="switchView('user-view')">← กลับไปหน้าทำรายการ</a>
+                    <a class="admin-link" style="color:var(--text-muted); cursor:pointer;" onclick="switchView('user-view')">← กลับไปหน้าทำรายการ</a>
                 </div>
             </div>
         </div>
@@ -194,8 +198,8 @@
             
             <div class="admin-tabs">
                 <div class="admin-tab active" id="tab-stock" onclick="switchAdminTab('stock')">📦 คลังสินค้า</div>
-                <div class="admin-tab" id="tab-history" onclick="switchAdminTab('history')">📜 ประวัติสั่งซื้อ</div>
-                <div class="admin-tab" id="tab-report" onclick="switchAdminTab('report')">📊 สรุปรายงาน AI</div>
+                <div class="admin-tab" id="tab-history" onclick="switchAdminTab('history')">📜 ประวัติ</div>
+                <div class="admin-tab" id="tab-report" onclick="switchAdminTab('report')">📊 รายงาน AI</div>
             </div>
 
             <div class="content" style="padding-top: 0;">
@@ -205,7 +209,7 @@
                         <h3 style="margin-top:0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="adminFormTitle">➕ เพิ่ม/แก้ไข รายการสินค้า</h3>
                         <div class="grid-2">
                             <div class="form-group"><label>รหัสสินค้า (SKU)</label><input type="text" id="itemId"></div>
-                            <div class="form-group"><label>ชื่อรายการ</label><input type="text" id="itemName"></div>
+                            <div class="form-group"><label>ชื่อรายการ (เช่น เสื้อเหลือง)</label><input type="text" id="itemName"></div>
                         </div>
                         <div class="grid-2">
                             <div class="form-group"><label>หน่วยนับ</label><input type="text" id="itemUnit" value="ตัว"></div>
@@ -230,14 +234,12 @@
 
                 <div id="admin-section-report" style="display: none;">
                     <div class="admin-box" style="background: #fff; padding: 20px;">
-                        
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                             <h3 style="margin:0; font-size: 16px; color: #1a1a1a;">🤖 รายงานวิเคราะห์คลังสินค้า</h3>
                             <select id="reportMonthFilter" onchange="generateReport()" style="width: auto; padding: 6px 10px; font-weight: 600; background: #f8f9fa;">
                                 <option value="all">ทั้งหมด (All Time)</option>
-                                </select>
+                            </select>
                         </div>
-
                         <div class="grid-2" style="margin-bottom: 20px;">
                             <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; text-align: center;">
                                 <div style="font-size: 13px; color: #6c757d;">ยอดสั่งซื้อทั้งหมด</div>
@@ -248,25 +250,20 @@
                                 <div style="font-size: 24px; font-weight: 600; color: #1a1a1a;" id="reportTotalItems">0 <span style="font-size: 14px; font-weight: normal;">ตัว</span></div>
                             </div>
                         </div>
-
                         <div style="background: #fff9e6; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; border: 1px solid #ffeeba;" id="aiInsightBox">
                             ✨ <b>AI Insight:</b> กำลังวิเคราะห์ข้อมูล...
                         </div>
-
-                        <h3 style="font-size: 15px; margin-bottom: 10px; color: #1a1a1a;">📊 รายละเอียดเบิก-จ่าย แยกตามรายการ</h3>
                         <table class="report-table">
                             <thead>
                                 <tr>
                                     <th style="text-align: left;">รายการเสื้อ</th>
-                                    <th style="text-align: center;">ยอดเดิมรวม</th>
+                                    <th style="text-align: center;">ยอดเดิม</th>
                                     <th style="text-align: center;">เบิกไป</th>
                                     <th style="text-align: center;">คงเหลือ</th>
                                 </tr>
                             </thead>
-                            <tbody id="reportTableBody">
-                                </tbody>
+                            <tbody id="reportTableBody"></tbody>
                         </table>
-
                     </div>
                 </div>
 
@@ -282,6 +279,7 @@
         
         let globalItems = [];
         let globalHistory = [];
+        let currentColorFilter = 'all'; // ตัวแปรเก็บค่าสีที่กำลังเลือก
 
         window.onload = function() { fetchItems(); };
 
@@ -292,24 +290,45 @@
                     globalItems = data.items;
                     globalHistory = data.history;
                     
-                    renderItems(globalItems);
+                    renderItems(); // โหลดรายการโดยใช้ Filter ล่าสุด
                     renderAdminStock(globalItems);
                     renderAdminHistory(globalHistory);
                     
-                    // เตรียมข้อมูลสำหรับ Report
                     populateMonthFilter();
                     generateReport();
                 })
                 .catch(error => console.error("Error:", error));
         }
 
-        // --- ส่วนของผู้เบิกซื้อ ---
-        function renderItems(items) {
+        // --- ส่วนของการกรองสี (ใหม่) ---
+        function filterColor(colorKeyword, element) {
+            currentColorFilter = colorKeyword;
+            
+            // อัปเดตสีปุ่ม Tab
+            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            
+            // สั่งเรนเดอร์รายการสินค้าใหม่
+            renderItems();
+        }
+
+        function renderItems() {
             const container = document.getElementById("itemListContainer");
             container.innerHTML = ""; 
-            if (items.length === 0) { container.innerHTML = '<div class="loading-text">ไม่มีรายการสินค้า</div>'; return; }
 
-            items.forEach((item) => {
+            // ตรวจสอบการกรองสี
+            let displayItems = globalItems;
+            if (currentColorFilter !== 'all') {
+                // ค้นหาคำว่า เหลือง, น้ำเงิน, เขียว, ขาว ในชื่อรายการสินค้า
+                displayItems = globalItems.filter(item => item.name.includes(currentColorFilter));
+            }
+
+            if (displayItems.length === 0) { 
+                container.innerHTML = `<div class="loading-text">ไม่มีรายการสินค้าในหมวดหมู่นี้ครับ</div>`; 
+                return; 
+            }
+
+            displayItems.forEach((item) => {
                 const imgUrl = item.image ? item.image : `https://via.placeholder.com/150/f8f9fa/1a1a1a?text=${item.name}`;
                 const isOutOfStock = item.stock <= 0;
                 container.innerHTML += `
@@ -346,7 +365,8 @@
                 department: document.getElementById("department").value,
                 otherDepartment: document.getElementById("otherDepartment").value,
                 gender: document.getElementById("gender").value,
-                color: document.getElementById("color").value,
+                // นำตัวเลือกสี (Color) ออกจากฟอร์มหลัก เพราะใช้ Tab กรองจากรายการสินค้าแทนแล้ว
+                color: "ระบุจากรายการ", 
                 size: document.getElementById("size").value,
                 otherSize: document.getElementById("otherSize").value,
                 itemsDataArray: itemsDataArray
@@ -397,7 +417,7 @@
                 <div class="admin-list-item" style="border-left: 4px solid #d4af37;">
                     <div class="admin-item-header">
                         <div style="font-weight: 600; font-size: 14px;">บิล: ${rec.orderId}</div>
-                        <button onclick="cancelOrder('${rec.orderId}', ${rec.rowIdx})" class="btn-small btn-delete">❌ ยกเลิกและคืนสต๊อก</button>
+                        <button onclick="cancelOrder('${rec.orderId}', ${rec.rowIdx})" class="btn-small btn-delete">❌ ยกเลิกบิล</button>
                     </div>
                     <div style="font-size: 13px; color: #6c757d; margin-bottom: 5px;">📅 ${dateStr} | 👤 ${rec.name}</div>
                     <div class="history-text">${rec.summary}</div>
@@ -409,72 +429,39 @@
             if(!confirm(`⚠️ ยืนยันการยกเลิกบิล ${orderId} และคืนสินค้าเข้าสต๊อก?`)) return;
             fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "cancel_order", orderId: orderId, rowIdx: rowIdx }) })
             .then(res => res.json())
-            .then(data => {
-                if(data.status === "success") { alert("✅ " + data.message); fetchItems(); } 
-                else { alert("❌ เกิดข้อผิดพลาด: " + data.message); }
-            });
+            .then(data => { if(data.status === "success") { alert("✅ " + data.message); fetchItems(); } else { alert("❌ เกิดข้อผิดพลาด"); } });
         }
 
-        // ==========================================
-        // 🚀 ระบบสรุปรายงาน AI (AI Report)
-        // ==========================================
-        
-        // 1. ดึงเดือนที่มีการสั่งซื้อมาสร้าง Dropdown
+        // --- ระบบสรุปรายงาน AI (AI Report) ---
         function populateMonthFilter() {
             let select = document.getElementById("reportMonthFilter");
             select.innerHTML = '<option value="all">ทั้งหมด (All Time)</option>';
-            
             let months = new Set();
             globalHistory.forEach(rec => {
                 let d = new Date(rec.timestamp);
-                let monthKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0');
-                months.add(monthKey);
+                months.add(d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0'));
             });
-
             let sortedMonths = Array.from(months).sort().reverse();
             const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-            
             sortedMonths.forEach(m => {
                 let [year, month] = m.split("-");
-                let label = monthNames[parseInt(month) - 1] + " " + year;
-                select.innerHTML += `<option value="${m}">${label}</option>`;
+                select.innerHTML += `<option value="${m}">${monthNames[parseInt(month) - 1]} ${year}</option>`;
             });
         }
 
-        // 2. คำนวณสรุปยอดทั้งหมด
         function generateReport() {
             const filter = document.getElementById("reportMonthFilter").value;
             let itemStats = {};
-            
-            // เตรียมกล่องเก็บข้อมูลของแต่ละรายการ
-            globalItems.forEach(item => {
-                itemStats[item.name] = { 
-                    original: 0, 
-                    deductedAllTime: 0, 
-                    deductedPeriod: 0, 
-                    remaining: parseInt(item.stock), 
-                    unit: item.unit 
-                };
-            });
+            globalItems.forEach(item => { itemStats[item.name] = { original: 0, deductedAllTime: 0, deductedPeriod: 0, remaining: parseInt(item.stock), unit: item.unit }; });
 
-            // วนลูปประวัติทั้งหมด เพื่อหา "ยอดเดิมรวม" (สต๊อกปัจจุบัน + เบิกไปทั้งหมด)
             globalHistory.forEach(rec => {
                 if (rec.rawItems) {
-                    try {
-                        let items = JSON.parse(rec.rawItems);
-                        items.forEach(i => {
-                            if (itemStats[i.name]) itemStats[i.name].deductedAllTime += parseInt(i.qty);
-                        });
-                    } catch(e) {}
+                    try { JSON.parse(rec.rawItems).forEach(i => { if (itemStats[i.name]) itemStats[i.name].deductedAllTime += parseInt(i.qty); }); } catch(e) {}
                 }
             });
 
-            // กำหนดค่ายอดเดิม
-            for (let key in itemStats) {
-                itemStats[key].original = itemStats[key].remaining + itemStats[key].deductedAllTime;
-            }
+            for (let key in itemStats) itemStats[key].original = itemStats[key].remaining + itemStats[key].deductedAllTime;
 
-            // กรองประวัติเฉพาะเดือนที่เลือก
             let filteredHistory = globalHistory.filter(rec => {
                 if (filter === "all") return true;
                 let d = new Date(rec.timestamp);
@@ -484,63 +471,34 @@
             let totalOrders = filteredHistory.length;
             let totalItemsDeducted = 0;
 
-            // วนลูปหา "ยอดเบิกในช่วงเวลาที่เลือก"
             filteredHistory.forEach(rec => {
                 if (rec.rawItems) {
-                    try {
-                        let items = JSON.parse(rec.rawItems);
-                        items.forEach(i => {
-                            if (itemStats[i.name]) {
-                                itemStats[i.name].deductedPeriod += parseInt(i.qty);
-                                totalItemsDeducted += parseInt(i.qty);
-                            }
-                        });
-                    } catch(e) {}
+                    try { JSON.parse(rec.rawItems).forEach(i => { if (itemStats[i.name]) { itemStats[i.name].deductedPeriod += parseInt(i.qty); totalItemsDeducted += parseInt(i.qty); } }); } catch(e) {}
                 }
             });
 
-            // อัปเดตตัวเลขการ์ด
             document.getElementById("reportTotalOrders").innerHTML = `${totalOrders} <span style="font-size: 14px; font-weight: normal;">บิล</span>`;
             document.getElementById("reportTotalItems").innerHTML = `${totalItemsDeducted} <span style="font-size: 14px; font-weight: normal;">ตัว</span>`;
 
-            // วาดตาราง & หาไอเทมขายดีสำหรับ AI
             let tbody = document.getElementById("reportTableBody");
             tbody.innerHTML = "";
-            let maxDeducted = 0;
-            let topItem = "-";
+            let maxDeducted = 0; let topItem = "-";
 
             for (let key in itemStats) {
                 let stat = itemStats[key];
-                
-                // หาตัวท็อป
                 if (stat.deductedPeriod > maxDeducted) { maxDeducted = stat.deductedPeriod; topItem = key; }
-
-                // โชว์เฉพาะของที่เคยมีในระบบ
                 if (stat.original > 0) {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td style="font-weight: 500;">${key}</td>
-                            <td style="text-align: center; color: #6c757d;">${stat.original}</td>
-                            <td style="text-align: center; font-weight: 600; color: #dc3545;">${stat.deductedPeriod}</td>
-                            <td style="text-align: center; font-weight: 600; color: #198754;">${stat.remaining}</td>
-                        </tr>
-                    `;
+                    tbody.innerHTML += `<tr><td style="font-weight: 500;">${key}</td><td style="text-align: center; color: #6c757d;">${stat.original}</td><td style="text-align: center; font-weight: 600; color: #dc3545;">${stat.deductedPeriod}</td><td style="text-align: center; font-weight: 600; color: #198754;">${stat.remaining}</td></tr>`;
                 }
             }
 
-            // สร้างคำแนะนำ AI
             let aiBox = document.getElementById("aiInsightBox");
-            if (totalOrders === 0) {
-                aiBox.innerHTML = "✨ <b>AI Insight:</b> ยังไม่มีข้อมูลการทำรายการในรอบบิลที่เลือกครับ";
-            } else {
+            if (totalOrders === 0) { aiBox.innerHTML = "✨ <b>AI Insight:</b> ยังไม่มีข้อมูลการทำรายการครับ"; } 
+            else {
                 let insightText = `✨ <b>AI Insight:</b> เสื้อรุ่นที่ฮิตที่สุดคือ <b>${topItem}</b> มีการเบิกไปถึง ${maxDeducted} ${itemStats[topItem].unit} `;
                 let topItemRemaining = itemStats[topItem] ? itemStats[topItem].remaining : 0;
-                
-                if (topItemRemaining <= 10) {
-                    insightText += `<br>⚠️ <b>แจ้งเตือน:</b> สต๊อกตอนนี้เหลือเพียง ${topItemRemaining} ${itemStats[topItem].unit} แนะนำให้ <b>รีบดำเนินการสั่งผลิตเพิ่ม</b> ด่วนครับ!`;
-                } else {
-                    insightText += `✅ สต๊อกปัจจุบันยังมีเพียงพอสำหรับการใช้งานครับ`;
-                }
+                if (topItemRemaining <= 10) insightText += `<br>⚠️ <b>แจ้งเตือน:</b> สต๊อกตอนนี้เหลือเพียง ${topItemRemaining} ตัว แนะนำให้ <b>รีบดำเนินการสั่งผลิตเพิ่ม</b> ด่วนครับ!`;
+                else insightText += `✅ สต๊อกปัจจุบันยังมีเพียงพอสำหรับการใช้งานครับ`;
                 aiBox.innerHTML = insightText;
             }
         }
@@ -582,7 +540,6 @@
         function switchAdminTab(tab) {
             document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('#admin-dashboard-view > .content > div').forEach(el => el.style.display = 'none');
-            
             document.getElementById('tab-' + tab).classList.add('active');
             document.getElementById('admin-section-' + tab).style.display = 'block';
         }
