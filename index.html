@@ -3,583 +3,1872 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบเบิกซื้อเสื้อบริษัท (e-Uniform) - Majestic Gold</title>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>9 Singha Broker — e-Uniform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ════════════════════════════════
+           ROOT VARIABLES & RESET
+        ════════════════════════════════ */
         :root {
-            /* 👑 Majestic Gold Theme Palette */
-            --primary-color: #D4AF37; /* สีทอง Majestic Gold */
-            --primary-hover: #B8860B; /* สีทองเข้มเวลาเอาเมาส์ชี้ */
-            --secondary-color: #0F0F0F; /* สีดำลึก Obsidian Black สำหรับไฮไลท์ */
-            --bg-color: #FBFBF9; /* สีขาวมุก Alabaster สำหรับพื้นหลังเว็บ */
-            --card-bg: #FFFFFF; /* สีขาวบริสุทธิ์สำหรับกล่องเนื้อหา */
-            --text-main: #1A1A1A; /* สีตัวอักษรหลัก (ดำเทา เพื่อให้อ่านง่าย) */
-            --text-muted: #7A6B53; /* สีเทาอมทอง สำหรับข้อความรอง */
-            --border-color: #E8D8BA; /* สีขอบสีทองอ่อนๆ */
-            --danger-color: #8B0000; /* สีแดงเข้ม สำหรับปุ่มลบ/ยกเลิก ให้ดูพรีเมียม */
-            --success-color: #1A5A22; /* สีเขียวเข้มหรูหรา */
+            --gold:        #C9A84C;
+            --gold-light:  #E8CC82;
+            --gold-dark:   #9A7A30;
+            --gold-glow:   rgba(201,168,76,0.18);
+            --onyx:        #0D0D0D;
+            --onyx-soft:   #161616;
+            --onyx-mid:    #1E1E1E;
+            --onyx-border: #2A2A2A;
+            --cream:       #F7F3EC;
+            --cream-mid:   #EDE7D9;
+            --cream-muted: #B8A98A;
+            --red-rich:    #8B1A1A;
+            --green-rich:  #1A5C2A;
+            --radius-sm:   6px;
+            --radius-md:   12px;
+            --radius-lg:   20px;
+            --shadow-sm:   0 2px 8px rgba(0,0,0,0.12);
+            --shadow-md:   0 8px 32px rgba(0,0,0,0.18);
+            --shadow-gold: 0 0 0 3px rgba(201,168,76,0.25);
+            --transition:  all 0.25s cubic-bezier(0.4,0,0.2,1);
         }
-        body { font-family: 'Prompt', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 650px; background: var(--card-bg); border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); overflow: hidden; position: relative; border: 1px solid var(--border-color); }
-        
-        /* 👑 Header สีดำตัดทอง */
-        .header { background-color: var(--secondary-color); color: var(--primary-color); padding: 35px 20px; text-align: center; border-bottom: 4px solid var(--primary-color); position: relative; }
-        .admin-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 6px 12px; border-radius: 6px; font-family: 'Prompt'; font-size: 12px; cursor: pointer; transition: 0.3s; }
-        .admin-btn-top:hover { background: var(--primary-color); color: var(--secondary-color); font-weight: 600; }
 
-        .header h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.8; font-weight: 300; letter-spacing: 1px; color: #E8D8BA; }
-        .content { padding: 35px 30px; }
-        
-        /* 👑 Form Styles */
-        .section-title { font-size: 16px; font-weight: 600; color: var(--secondary-color); margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
-        .section-title::before { content: "✦"; color: var(--primary-color); }
-        
-        .form-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: var(--text-main); }
-        input[type="text"], input[type="password"], input[type="number"], select { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Prompt'; font-size: 14px; transition: 0.3s; background-color: #FFFFFF; color: var(--text-main); }
-        input:focus, select:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* 👑 แถบแยกสี (Category Tabs) */
-        .category-tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-        .category-tab { padding: 8px 18px; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.3s; color: var(--text-muted); font-weight: 500; }
-        .category-tab:hover { border-color: var(--primary-color); color: var(--secondary-color); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.1); }
-        .category-tab.active { background: var(--primary-color); color: var(--secondary-color); border-color: var(--primary-color); font-weight: 600; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
-        .category-tabs::-webkit-scrollbar { display: none; }
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #0A0A0A;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.06) 0%, transparent 60%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 16px 60px;
+            color: var(--cream);
+        }
 
-        /* 👑 Item Cards */
-        .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-        .item-card { display: flex; align-items: center; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; background: #FFFFFF; transition: all 0.3s; }
-        .item-card:hover { border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.08); transform: translateY(-2px); }
-        .item-card img { width: 75px; height: 75px; object-fit: cover; border-radius: 6px; margin-right: 18px; border: 1px solid var(--border-color); padding: 2px; }
-        .item-info { flex-grow: 1; }
-        .item-name { font-weight: 600; font-size: 16px; margin-bottom: 4px; color: var(--secondary-color); }
-        .item-stock { font-size: 13px; color: var(--text-muted); }
-        .item-qty { width: 90px !important; text-align: center; font-weight: 600; border-color: var(--border-color) !important; color: var(--secondary-color); background: #FDFDFB !important; }
-        .item-qty:focus { background: #FFF !important; }
-        
-        /* 👑 Buttons (ปุ่มสีทอง ตัวอักษรสีดำ) */
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Prompt'; transition: all 0.3s; letter-spacing: 0.5px; text-transform: uppercase; }
-        .btn-submit { background-color: var(--primary-color); color: var(--secondary-color); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
-        .btn-submit:hover { background-color: var(--primary-hover); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); transform: translateY(-1px); }
-        .btn-submit:disabled { background-color: var(--border-color); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
-        
-        #admin-login-view, #admin-dashboard-view { display: none; }
-        .loading-text { text-align: center; padding: 20px; color: var(--primary-color); font-size: 14px; font-weight: 500; letter-spacing: 1px; }
+        /* ════════════════════════════════
+           APP SHELL
+        ════════════════════════════════ */
+        .shell {
+            width: 100%;
+            max-width: 580px;
+            position: relative;
+        }
 
-        /* 👑 Admin Styles */
-        .admin-box { background: #FFFFFF; border: 1px solid var(--border-color); padding: 25px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .admin-list-item { display: flex; flex-direction: column; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 12px; background: #FFFFFF; transition: 0.3s; }
-        .admin-list-item:hover { border-color: var(--primary-color); }
-        .admin-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .action-btns { display: flex; gap: 8px; }
-        
-        /* ปุ่มเล็กในหน้าแอดมิน */
-        .btn-small { padding: 6px 12px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; color: #FFFFFF; font-family: 'Prompt'; font-weight: 500; }
-        .btn-edit { background-color: var(--text-muted); }
-        .btn-edit:hover { background-color: var(--primary-color); color: var(--secondary-color); }
-        .btn-delete { background-color: var(--danger-color); }
-        .history-text { font-size: 13px; color: var(--text-muted); white-space: pre-line; background: var(--bg-color); padding: 12px; border-radius: 6px; margin-top: 8px; border: 1px dashed var(--border-color); }
-        
-        /* 👑 แท็บ Admin */
-        .admin-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; font-size: 14px; }
-        .admin-tab { flex: 1; text-align: center; padding: 12px 5px; cursor: pointer; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
-        .admin-tab:hover { color: var(--primary-hover); }
-        .admin-tab.active { color: var(--secondary-color); border-bottom: 3px solid var(--primary-color); margin-bottom: -2px; }
-        
-        /* 👑 สไตล์ตาราง Report */
-        .report-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; background: white; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
-        .report-table th { background: var(--secondary-color); color: var(--primary-color); padding: 14px 10px; font-weight: 500; letter-spacing: 0.5px; }
-        .report-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
-        .report-table tr:hover td { background: rgba(212, 175, 55, 0.03); }
-        .report-table tr:last-child td { border-bottom: none; }
-        
-        /* สรุปตัวเลข */
-        .summary-card { background: #FFFFFF; padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .summary-card .label { font-size: 13px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .summary-card .value { font-size: 28px; font-weight: 700; color: var(--primary-color); margin-top: 5px; text-shadow: 1px 1px 0px rgba(0,0,0,0.1); }
-        
-        /* กล่อง AI */
-        .ai-box { background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.02) 100%); color: var(--secondary-color); padding: 18px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; border: 1px solid var(--primary-color); line-height: 1.6; }
+        /* ════════════════════════════════
+           HEADER
+        ════════════════════════════════ */
+        .app-header {
+            text-align: center;
+            padding: 42px 20px 32px;
+            position: relative;
+        }
+
+        .header-crown {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .header-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .header-diamond {
+            width: 10px; height: 10px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        .app-header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(20px, 5vw, 26px);
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(201,168,76,0.3);
+            line-height: 1.2;
+        }
+
+        .app-header .tagline {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--cream-muted);
+            letter-spacing: 2px;
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+
+        .admin-pill {
+            position: absolute;
+            top: 18px; right: 0;
+            background: transparent;
+            border: 1px solid var(--onyx-border);
+            color: var(--cream-muted);
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+        }
+
+        .admin-pill:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201,168,76,0.05);
+        }
+
+        /* ════════════════════════════════
+           CARD SURFACE
+        ════════════════════════════════ */
+        .card {
+            background: var(--onyx-soft);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        /* ════════════════════════════════
+           STEP WIZARD
+        ════════════════════════════════ */
+        .wizard-steps {
+            display: flex;
+            align-items: center;
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--onyx-border);
+            gap: 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            cursor: default;
+        }
+
+        .step-num {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid var(--onyx-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--cream-muted);
+            flex-shrink: 0;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item.active .step-num {
+            border-color: var(--gold);
+            color: var(--onyx);
+            background: var(--gold);
+            box-shadow: 0 0 16px rgba(201,168,76,0.4);
+        }
+
+        .step-item.done .step-num {
+            border-color: var(--gold-dark);
+            background: var(--gold-dark);
+            color: var(--cream);
+        }
+
+        .step-item.done .step-num::after {
+            content: "✓";
+            font-size: 14px;
+        }
+
+        .step-item.done .step-num span,
+        .step-item.active .step-num span { /* hide number text when done/showing checkmark */
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--cream-muted);
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+
+        .step-item.active .step-label { color: var(--gold); }
+        .step-item.done .step-label { color: var(--gold-dark); }
+
+        .step-connector {
+            flex: 1;
+            height: 1px;
+            background: var(--onyx-border);
+            margin: 0 6px;
+            transition: var(--transition);
+        }
+
+        .step-connector.done { background: var(--gold-dark); }
+
+        /* ════════════════════════════════
+           FORM BODY
+        ════════════════════════════════ */
+        .form-body {
+            padding: 28px 24px 24px;
+        }
+
+        /* Sections */
+        .form-section {
+            display: none;
+            animation: fadeSlideIn 0.3s ease;
+        }
+
+        .form-section.active { display: block; }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Label */
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold-dark), transparent);
+        }
+
+        /* ════════════════════════════════
+           INPUTS
+        ════════════════════════════════ */
+        .field-group { margin-bottom: 18px; }
+
+        .field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--cream-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .field-label .req {
+            color: var(--gold);
+            margin-left: 3px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            width: 100%;
+            background: var(--onyx-mid);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-sm);
+            padding: 13px 15px;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 14px;
+            color: var(--cream);
+            transition: var(--transition);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input::placeholder { color: #444; }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
+            background: #1C1C1C;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B8A98A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1E1E1E;
+            color: var(--cream);
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        /* ════════════════════════════════
+           COLOR FILTER TABS
+        ════════════════════════════════ */
+        .color-filter {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            margin-bottom: 22px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .color-filter::-webkit-scrollbar { display: none; }
+
+        .cf-btn {
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--onyx-border);
+            background: transparent;
+            color: var(--cream-muted);
+            font-family: 'Sarabun', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition);
+            letter-spacing: 0.5px;
+        }
+
+        .cf-btn:hover {
+            border-color: var(--gold-dark);
+            color: var(--cream);
+        }
+
+        .cf-btn.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--onyx);
+        }
+
+        /* ════════════════════════════════
+           PRODUCT CARDS
+        ════════════════════════════════ */
+        .product-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .product-card {
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            align-items: center;
+            gap: 16px;
+            background: var(--onyx-mid);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            border-color: #333;
+            transform: translateX(2px);
+        }
+
+        .product-card.has-qty {
+            border-color: var(--gold-dark);
+            background: rgba(201,168,76,0.04);
+        }
+
+        .product-card.has-qty::before {
+            background: var(--gold);
+        }
+
+        .product-card.out-of-stock {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        .product-img {
+            width: 72px; height: 72px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            border: 1px solid var(--onyx-border);
+            background: var(--onyx);
+        }
+
+        .product-info {}
+        .product-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--cream);
+            line-height: 1.3;
+            margin-bottom: 5px;
+        }
+
+        .product-stock {
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stock-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .stock-ok   { color: #5CBD7A; }
+        .stock-ok .stock-dot   { background: #5CBD7A; }
+        .stock-low  { color: #E8A84C; }
+        .stock-low .stock-dot  { background: #E8A84C; }
+        .stock-none { color: var(--red-rich); }
+
+        /* Quantity Stepper */
+        .qty-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            width: 34px; height: 36px;
+            background: var(--onyx);
+            border: none;
+            color: var(--cream-muted);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .qty-btn:hover:not(:disabled) {
+            background: var(--gold);
+            color: var(--onyx);
+        }
+
+        .qty-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .qty-input {
+            width: 44px !important;
+            height: 36px !important;
+            background: var(--onyx-mid) !important;
+            border: none !important;
+            border-left: 1px solid var(--onyx-border) !important;
+            border-right: 1px solid var(--onyx-border) !important;
+            border-radius: 0 !important;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px !important;
+            color: var(--cream) !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .qty-input:focus {
+            box-shadow: none !important;
+            border-color: var(--onyx-border) !important;
+        }
+
+        /* ════════════════════════════════
+           ORDER SUMMARY BAR
+        ════════════════════════════════ */
+        .cart-summary {
+            background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.03));
+            border: 1px solid var(--gold-dark);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .cart-summary.visible { display: block; animation: fadeSlideIn 0.3s ease; }
+
+        .cart-summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .cart-items-list { display: flex; flex-direction: column; gap: 6px; }
+
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--cream-muted);
+        }
+
+        .cart-row strong { color: var(--cream); font-weight: 600; }
+
+        /* ════════════════════════════════
+           CONFIRM SUMMARY PAGE
+        ════════════════════════════════ */
+        .confirm-block {
+            background: var(--onyx-mid);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .confirm-block-title {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .confirm-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px solid #262626;
+            font-size: 14px;
+        }
+
+        .confirm-row:last-child { border-bottom: none; }
+
+        .confirm-key { color: var(--cream-muted); font-weight: 500; flex-shrink: 0; margin-right: 16px; }
+        .confirm-val { color: var(--cream); font-weight: 600; text-align: right; }
+
+        /* ════════════════════════════════
+           BUTTONS
+        ════════════════════════════════ */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'Sarabun', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--onyx);
+            box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--gold-light);
+            box-shadow: 0 6px 28px rgba(201,168,76,0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: #2A2A2A;
+            color: #444;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--onyx-border);
+            color: var(--cream-muted);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--cream-muted);
+            color: var(--cream);
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1px solid var(--red-rich);
+            color: #C05050;
+        }
+
+        .btn-danger:hover {
+            background: var(--red-rich);
+            color: var(--cream);
+        }
+
+        /* ════════════════════════════════
+           LOADING STATE
+        ════════════════════════════════ */
+        .skeleton-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .skeleton-card {
+            height: 100px;
+            background: linear-gradient(90deg, #1A1A1A 25%, #222 50%, #1A1A1A 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: var(--radius-md);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ════════════════════════════════
+           TOAST NOTIFICATIONS
+        ════════════════════════════════ */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--onyx-mid);
+            border: 1px solid var(--onyx-border);
+            border-radius: 30px;
+            padding: 12px 22px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--cream);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+            white-space: nowrap;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .toast.success { border-color: var(--gold-dark); }
+        .toast.error   { border-color: var(--red-rich); }
+
+        @keyframes toastIn  { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity:1; } to { opacity:0; } }
+
+        /* ════════════════════════════════
+           VIEW TOGGLE
+        ════════════════════════════════ */
+        #admin-login-view,
+        #admin-dashboard-view { display: none; }
+
+        /* ════════════════════════════════
+           ADMIN — LOGIN
+        ════════════════════════════════ */
+        .auth-card {
+            background: var(--onyx-soft);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            margin-top: 0;
+        }
+
+        .auth-title {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-title .eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .auth-title h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: var(--cream);
+            font-weight: 600;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--cream-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .back-link:hover { color: var(--gold); }
+
+        /* ════════════════════════════════
+           ADMIN — DASHBOARD
+        ════════════════════════════════ */
+        .dash-header {
+            background: var(--onyx-soft);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 24px;
+            border-bottom: none;
+        }
+
+        .dash-tabs {
+            display: flex;
+            background: var(--onyx-mid);
+            border: 1px solid var(--onyx-border);
+            border-top: none;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .dash-tab {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--cream-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .dash-tab:hover { color: var(--cream); background: rgba(255,255,255,0.03); }
+
+        .dash-tab.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+            background: rgba(201,168,76,0.04);
+        }
+
+        .dash-section { display: none; animation: fadeSlideIn 0.3s ease; }
+        .dash-section.active { display: block; }
+
+        /* Stat Cards */
+        .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+
+        .stat-card {
+            background: var(--onyx-soft);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cream-muted);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .stat-val {
+            font-family: 'Cinzel', serif;
+            font-size: 30px;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .stat-card .stat-unit {
+            font-family: 'Sarabun', sans-serif;
+            font-size: 12px;
+            color: var(--cream-muted);
+            margin-left: 4px;
+        }
+
+        /* AI Insight Box */
+        .ai-insight {
+            background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+            border: 1px solid var(--gold-dark);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--cream-muted);
+            margin-bottom: 20px;
+        }
+
+        .ai-insight strong { color: var(--gold); }
+
+        /* Report Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--onyx-border);
+        }
+
+        .data-table thead tr {
+            background: var(--onyx);
+        }
+
+        .data-table th {
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .data-table td {
+            padding: 12px 14px;
+            border-top: 1px solid var(--onyx-border);
+            color: var(--cream);
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* Stock list in admin */
+        .stock-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--onyx-border);
+            gap: 14px;
+        }
+
+        .stock-item:last-child { border-bottom: none; }
+
+        .stock-item-info { flex: 1; }
+        .stock-item-id { font-size: 11px; color: var(--cream-muted); letter-spacing: 1px; }
+        .stock-item-name { font-weight: 600; font-size: 14px; color: var(--cream); }
+        .stock-badge {
+            background: rgba(91,189,122,0.12);
+            color: #5CBD7A;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .stock-badge.low { background: rgba(232,168,76,0.12); color: #E8A84C; }
+        .stock-badge.zero { background: rgba(139,26,26,0.15); color: #C05050; }
+
+        .action-btns-sm { display: flex; gap: 6px; }
+
+        .btn-xs {
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--onyx-border);
+            background: transparent;
+            color: var(--cream-muted);
+            font-family: 'Sarabun', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-xs:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-xs.del:hover { border-color: var(--red-rich); color: #C05050; }
+
+        /* History */
+        .history-item {
+            background: var(--onyx-soft);
+            border: 1px solid var(--onyx-border);
+            border-left: 3px solid var(--gold-dark);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin-bottom: 10px;
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .history-order-id {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .history-meta {
+            font-size: 12px;
+            color: var(--cream-muted);
+            margin-top: 3px;
+        }
+
+        .history-summary {
+            font-size: 12px;
+            color: var(--cream-muted);
+            background: var(--onyx);
+            padding: 10px 14px;
+            border-radius: 6px;
+            white-space: pre-line;
+            line-height: 1.7;
+            border: 1px solid var(--onyx-border);
+        }
+
+        /* Admin Form */
+        .admin-form-card {
+            background: var(--onyx-soft);
+            border: 1px solid var(--onyx-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-form-title {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 18px;
+        }
+
+        /* Month select */
+        .filter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .filter-row h3 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--cream);
+        }
+
+        select.mini {
+            width: auto;
+            padding: 8px 32px 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-color: var(--onyx-border);
+        }
+
+        /* ════════════════════════════════
+           SUCCESS SCREEN
+        ════════════════════════════════ */
+        .success-screen {
+            text-align: center;
+            padding: 50px 24px;
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+
+        .success-screen.active { display: block; }
+
+        .success-icon {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+            background: rgba(201,168,76,0.08);
+            box-shadow: 0 0 40px rgba(201,168,76,0.2);
+        }
+
+        .success-screen h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            color: var(--cream);
+            margin-bottom: 8px;
+        }
+
+        .success-screen p {
+            font-size: 14px;
+            color: var(--cream-muted);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 36px 20px;
+            color: var(--cream-muted);
+            font-size: 13px;
+            border: 1px dashed var(--onyx-border);
+            border-radius: var(--radius-md);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--onyx-border); border-radius: 4px; }
+
+        /* ════════════════════════════════
+           RESPONSIVE
+        ════════════════════════════════ */
+        @media (max-width: 420px) {
+            body { padding: 12px 10px 60px; }
+            .form-body { padding: 22px 16px 18px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .step-label { display: none; }
+            .step-connector { flex: 0 0 20px; }
+            .wizard-steps { padding: 18px 16px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        
-        <div id="user-view">
-            <div class="header">
-                <button type="button" class="admin-btn-top" onclick="switchView('admin-login-view')">✦ ADMIN</button>
-                <h1>9 Singha Broker UNIFORM</h1>
-                <p>ระบบเบิกซื้อเสื้อบริษัท (e-Uniform)</p>
+<div class="shell">
+    <!-- ═══ TOAST CONTAINER ═══ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ═══════════════════════════════════════
+         USER VIEW
+    ═══════════════════════════════════════ -->
+    <div id="user-view">
+        <div class="app-header">
+            <button class="admin-pill" onclick="switchView('admin-login-view')">Admin</button>
+
+            <div class="header-crown">
+                <div class="header-line"></div>
+                <div class="header-diamond"></div>
+                <div class="header-line"></div>
             </div>
-            
-            <div class="content">
-                <form id="uniformForm" onsubmit="submitForm(event)">
-                    
-                    <div class="section-title">ข้อมูลผู้ทำรายการ</div>
-                    <div class="form-group">
-                        <label>ชื่อ-นามสกุล *</label>
-                        <input type="text" id="fullName" required placeholder="ระบุชื่อ-นามสกุลผู้เบิก">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>สังกัด / แผนก *</label>
-                        <select id="department" required onchange="checkDepartment()">
-                            <option value="">-- กรุณาเลือกแผนก --</option>
-                            <option value="Marketing Support">Marketing Support</option>
-                            <option value="PA1">PA1</option>
-                            <option value="PA2">PA2</option>
-                            <option value="PA RENEW">PA RENEW</option>
-                            <option value="HEALTH&CANCER">HEALTH&CANCER</option>
-                            <option value="MOTOR">MOTOR</option>
-                            <option value="RETAIL">RETAIL</option>
-                            <option value="Corperate Sales">Corperate Sales</option>
-                            <option value="Sales Support">Sales Support</option>
-                            <option value="HR">HR</option>
-                            <option value="OFFICE ADMIN">OFFICE ADMIN</option>
-                            <option value="IT office">IT office</option>
-                            <option value="Accounting & Finance Office">Accounting & Finance Office</option>
-                            <option value="ComplianceOffice">ComplianceOffice</option>
-                            <option value="อื่นๆ">อื่นๆ (ช่องเติมข้อความ)</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="otherDeptDiv" style="display: none;">
-                        <input type="text" id="otherDepartment" placeholder="พิมพ์ชื่อแผนก">
-                    </div>
 
-                    <div class="section-title">รายละเอียดสินค้า</div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>เพศ *</label>
-                            <select id="gender" required>
-                                <option value="">-- เลือก --</option>
-                                <option value="ชาย">ชาย</option>
-                                <option value="หญิง">หญิง</option>
+            <h1>9 SINGHA BROKER</h1>
+            <p class="tagline">ระบบเบิกซื้อเครื่องแบบพนักงาน</p>
+        </div>
+
+        <!-- ORDER FORM -->
+        <div class="card" id="formCard">
+            <!-- Step indicator -->
+            <div class="wizard-steps" id="wizardSteps">
+                <div class="step-item active" id="step-ind-1">
+                    <div class="step-num"><span>1</span></div>
+                    <div class="step-label">ข้อมูล</div>
+                </div>
+                <div class="step-connector" id="conn-1-2"></div>
+                <div class="step-item" id="step-ind-2">
+                    <div class="step-num"><span>2</span></div>
+                    <div class="step-label">เลือกสินค้า</div>
+                </div>
+                <div class="step-connector" id="conn-2-3"></div>
+                <div class="step-item" id="step-ind-3">
+                    <div class="step-num"><span>3</span></div>
+                    <div class="step-label">ยืนยัน</div>
+                </div>
+            </div>
+
+            <!-- ── STEP 1: Personal Info ── -->
+            <div class="form-body">
+                <form id="uniformForm">
+                    <div class="form-section active" id="step-1">
+                        <div class="section-label">ข้อมูลผู้ทำรายการ</div>
+
+                        <div class="field-group">
+                            <label class="field-label">ชื่อ-นามสกุล <span class="req">*</span></label>
+                            <input type="text" id="fullName" required placeholder="ระบุชื่อ-นามสกุล">
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">สังกัด / แผนก <span class="req">*</span></label>
+                            <select id="department" required onchange="checkDepartment()">
+                                <option value="">— กรุณาเลือกแผนก —</option>
+                                <option>Marketing Support</option>
+                                <option>PA1</option>
+                                <option>PA2</option>
+                                <option>PA RENEW</option>
+                                <option>HEALTH&amp;CANCER</option>
+                                <option>MOTOR</option>
+                                <option>RETAIL</option>
+                                <option>Corperate Sales</option>
+                                <option>Sales Support</option>
+                                <option>HR</option>
+                                <option>OFFICE ADMIN</option>
+                                <option>IT office</option>
+                                <option>Accounting &amp; Finance Office</option>
+                                <option>ComplianceOffice</option>
+                                <option value="อื่นๆ">อื่นๆ (ระบุเพิ่มเติม)</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>ไซส์ (Size) *</label>
-                            <select id="size" required onchange="checkSize()">
-                                <option value="">-- เลือก --</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="2XL">2XL</option>
-                                <option value="3XL">3XL</option>
-                                <option value="4XL">4XL</option>
-                                <option value="อื่นๆ">อื่นๆ</option>
-                            </select>
+
+                        <div class="field-group" id="otherDeptDiv" style="display:none">
+                            <input type="text" id="otherDepartment" placeholder="พิมพ์ชื่อแผนก">
+                        </div>
+
+                        <div class="grid-2">
+                            <div class="field-group">
+                                <label class="field-label">เพศ <span class="req">*</span></label>
+                                <select id="gender" required>
+                                    <option value="">— เลือก —</option>
+                                    <option>ชาย</option>
+                                    <option>หญิง</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">ไซส์ <span class="req">*</span></label>
+                                <select id="size" required onchange="checkSize()">
+                                    <option value="">— เลือก —</option>
+                                    <option>S</option><option>M</option><option>L</option>
+                                    <option>XL</option><option>2XL</option><option>3XL</option>
+                                    <option>4XL</option><option value="อื่นๆ">อื่นๆ</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="field-group" id="otherSizeDiv" style="display:none">
+                            <input type="text" id="otherSize" placeholder="ระบุไซส์">
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="goToStep2()">
+                            ถัดไป — เลือกสินค้า
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- ── STEP 2: Select Items ── -->
+                    <div class="form-section" id="step-2">
+                        <div class="section-label">เลือกเครื่องแบบ</div>
+
+                        <div class="color-filter" id="colorFilter">
+                            <button type="button" class="cf-btn active" onclick="filterColor('all',this)">ทั้งหมด</button>
+                            <button type="button" class="cf-btn" onclick="filterColor('เหลือง',this)">🟡 เหลือง</button>
+                            <button type="button" class="cf-btn" onclick="filterColor('น้ำเงิน',this)">🔵 น้ำเงิน</button>
+                            <button type="button" class="cf-btn" onclick="filterColor('เขียว',this)">🟢 เขียว</button>
+                            <button type="button" class="cf-btn" onclick="filterColor('ขาว',this)">⚪ ขาว</button>
+                        </div>
+
+                        <div class="product-grid" id="productGrid">
+                            <div class="skeleton-list">
+                                <div class="skeleton-card"></div>
+                                <div class="skeleton-card"></div>
+                                <div class="skeleton-card"></div>
+                            </div>
+                        </div>
+
+                        <!-- Cart Summary -->
+                        <div class="cart-summary" id="cartSummary">
+                            <div class="cart-summary-header">
+                                <span>✦ รายการที่เลือก</span>
+                                <span id="cartTotalCount"></span>
+                            </div>
+                            <div class="cart-items-list" id="cartItemsList"></div>
+                        </div>
+
+                        <div class="btn-row">
+                            <button type="button" class="btn btn-ghost" style="flex:0 0 auto; padding:15px 18px;" onclick="goToStep(1)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button type="button" class="btn btn-primary" id="step2NextBtn" onclick="goToStep3()" disabled>
+                                ตรวจสอบรายการ
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
                         </div>
                     </div>
-                    <div class="form-group" id="otherSizeDiv" style="display: none;">
-                        <input type="text" id="otherSize" placeholder="ระบุไซส์อื่นๆ ที่ต้องการ">
-                    </div>
 
-                    <div class="section-title">คอลเลกชันเครื่องแต่งกาย</div>
-                    
-                    <div class="category-tabs" id="colorTabs">
-                        <div class="category-tab active" onclick="filterColor('all', this)">รวมทั้งหมด</div>
-                        <div class="category-tab" onclick="filterColor('เหลือง', this)">🟡 สีเหลือง</div>
-                        <div class="category-tab" onclick="filterColor('น้ำเงิน', this)">🔵 สีน้ำเงิน</div>
-                        <div class="category-tab" onclick="filterColor('เขียว', this)">🟢 สีเขียว</div>
-                        <div class="category-tab" onclick="filterColor('ขาว', this)">⚪️ สีขาว</div>
-                    </div>
+                    <!-- ── STEP 3: Confirm ── -->
+                    <div class="form-section" id="step-3">
+                        <div class="section-label">ยืนยันรายการ</div>
 
-                    <div class="item-list" id="itemListContainer">
-                        <div class="loading-text">✦ กำลังโหลดคอลเลกชัน...</div>
-                    </div>
+                        <div class="confirm-block" id="confirmPersonal"></div>
+                        <div class="confirm-block" id="confirmItems"></div>
 
-                    <button type="submit" id="submitBtn" class="btn btn-submit">ยืนยันการสั่งซื้อ</button>
+                        <div class="btn-row">
+                            <button type="button" class="btn btn-ghost" style="flex:0 0 auto; padding:15px 18px;" onclick="goToStep(2)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                ✦ ยืนยันการสั่งซื้อ
+                            </button>
+                        </div>
+                    </div>
                 </form>
-            </div>
-        </div>
 
-        <div id="admin-login-view">
-            <div class="header">
-                <h1>MAJESTIC ADMIN</h1>
-                <p>System Management</p>
-            </div>
-            <div class="content">
-                <div class="form-group">
-                    <label>รหัสผ่าน</label>
-                    <input type="password" id="adminPass" placeholder="กรอกรหัสผ่านแล้วกด Enter" onkeypress="if(event.key === 'Enter') loginAdmin()">
-                </div>
-                <button onclick="loginAdmin()" class="btn btn-submit">เข้าสู่ระบบ</button>
-                <div style="text-align: center; margin-top: 25px;">
-                    <a class="admin-link" style="color:var(--text-muted); cursor:pointer; font-size: 13px;" onclick="switchView('user-view')">← กลับไปหน้าทำรายการ</a>
+                <!-- Success Screen -->
+                <div class="success-screen" id="successScreen">
+                    <div class="success-icon">✦</div>
+                    <h2>บันทึกเรียบร้อย</h2>
+                    <p>รายการของคุณถูกบันทึกในระบบแล้ว<br>ทีม HR จะดำเนินการต่อไป</p>
+                    <button class="btn btn-primary" onclick="resetForm()">ทำรายการใหม่</button>
                 </div>
             </div>
         </div>
-
-        <div id="admin-dashboard-view">
-            <div class="header">
-                <h1>MAJESTIC DASHBOARD</h1>
-                <p>จัดการคลังสินค้า ประวัติ และ AI Report</p>
-            </div>
-            
-            <div class="admin-tabs">
-                <div class="admin-tab active" id="tab-stock" onclick="switchAdminTab('stock')">📦 คลังสินค้า</div>
-                <div class="admin-tab" id="tab-history" onclick="switchAdminTab('history')">📜 ประวัติ</div>
-                <div class="admin-tab" id="tab-report" onclick="switchAdminTab('report')">✦ รายงาน AI</div>
-            </div>
-
-            <div class="content" style="padding-top: 0;">
-                
-                <div id="admin-section-stock">
-                    <div class="admin-box">
-                        <h3 style="margin-top:0; font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--secondary-color);" id="adminFormTitle">✦ เพิ่ม/แก้ไข รายการสินค้า</h3>
-                        <div class="grid-2">
-                            <div class="form-group"><label>รหัสสินค้า (SKU)</label><input type="text" id="itemId"></div>
-                            <div class="form-group"><label>ชื่อรายการ</label><input type="text" id="itemName"></div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group"><label>หน่วยนับ</label><input type="text" id="itemUnit" value="ตัว"></div>
-                            <div class="form-group"><label>จำนวนสต๊อกรวม</label><input type="number" id="itemStock" min="0"></div>
-                        </div>
-                        <div class="form-group"><label>URL รูปภาพ</label><input type="text" id="itemImage"></div>
-                        <div class="action-btns" style="margin-top: 15px;">
-                            <button onclick="saveItemAdmin()" id="btnSaveAdmin" class="btn btn-submit">💾 บันทึกข้อมูล</button>
-                            <button onclick="clearAdminForm()" class="btn" style="background-color: transparent; border: 1px solid var(--text-muted); width: 40%; color: var(--text-muted);">ล้างค่า</button>
-                        </div>
-                    </div>
-                    <h3 style="font-size: 16px; color: var(--secondary-color);">📦 สต๊อกสินค้าคงเหลือ</h3>
-                    <div id="adminStockContainer"></div>
-                </div>
-
-                <div id="admin-section-history" style="display: none;">
-                    <div class="admin-box">
-                        <h3 style="margin-top:0; font-size: 16px; color: var(--danger-color);">🚨 ตรวจสอบและยกเลิกบิล</h3>
-                        <div id="adminHistoryContainer"></div>
-                    </div>
-                </div>
-
-                <div id="admin-section-report" style="display: none;">
-                    <div class="admin-box">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 style="margin:0; font-size: 16px; color: var(--secondary-color);">✦ รายงานวิเคราะห์คลังสินค้า</h3>
-                            <select id="reportMonthFilter" onchange="generateReport()" style="width: auto; padding: 6px 10px; font-weight: 600; border-color: var(--border-color);">
-                                <option value="all">ทั้งหมด (All Time)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="grid-2" style="margin-bottom: 20px;">
-                            <div class="summary-card">
-                                <div class="label">ยอดสั่งซื้อทั้งหมด</div>
-                                <div class="value" id="reportTotalOrders">0 <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">บิล</span></div>
-                            </div>
-                            <div class="summary-card">
-                                <div class="label">รวมสินค้าที่เบิก</div>
-                                <div class="value" id="reportTotalItems">0 <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">ชิ้น</span></div>
-                            </div>
-                        </div>
-                        
-                        <div class="ai-box" id="aiInsightBox">
-                            ✦ <b>AI Insight:</b> กำลังวิเคราะห์ข้อมูล...
-                        </div>
-                        
-                        <table class="report-table">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: left;">รายการสินค้า</th>
-                                    <th style="text-align: center;">ยอดเดิม</th>
-                                    <th style="text-align: center;">เบิกไป</th>
-                                    <th style="text-align: center;">คงเหลือ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <button onclick="switchView('user-view')" class="btn" style="background-color: var(--secondary-color); color: var(--primary-color); border: 1px solid var(--primary-color); margin-top: 20px;">🚪 ออกจากระบบ</button>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        // ⚠️ วาง URL Web App ของคุณที่นี่ครับ
-        const API_URL = "https://script.google.com/macros/s/AKfycbzGHRECc0XPT2UnpsDUJUtys0QrbLldz1qvDfeD3zCcvw36YjTM2BGOwmCRScu3UWFM/exec"; 
-        
-        let globalItems = [];
-        let globalHistory = [];
-        let currentColorFilter = 'all'; 
+    <!-- ═══════════════════════════════════════
+         ADMIN LOGIN VIEW
+    ═══════════════════════════════════════ -->
+    <div id="admin-login-view">
+        <div class="app-header">
+            <div class="header-crown">
+                <div class="header-line"></div>
+                <div class="header-diamond"></div>
+                <div class="header-line"></div>
+            </div>
+            <h1>MAJESTIC ADMIN</h1>
+            <p class="tagline">System Management Console</p>
+        </div>
 
-        window.onload = function() { fetchItems(); };
+        <div class="auth-card">
+            <div class="auth-title">
+                <div class="eyebrow">Secure Access</div>
+                <h2>Admin Portal</h2>
+            </div>
 
-        function fetchItems() {
-            fetch(API_URL)
-                .then(response => response.json())
-                .then(data => {
-                    globalItems = data.items;
-                    globalHistory = data.history;
-                    renderItems(); 
-                    renderAdminStock(globalItems);
-                    renderAdminHistory(globalHistory);
-                    populateMonthFilter();
-                    generateReport();
-                })
-                .catch(error => console.error("Error:", error));
-        }
+            <div class="field-group">
+                <label class="field-label">รหัสผ่าน</label>
+                <input type="password" id="adminPass" placeholder="••••••••••••" 
+                       onkeypress="if(event.key==='Enter') loginAdmin()">
+            </div>
 
-        function filterColor(colorKeyword, element) {
-            currentColorFilter = colorKeyword;
-            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
-            renderItems();
-        }
+            <button type="button" class="btn btn-primary" onclick="loginAdmin()">เข้าสู่ระบบ</button>
 
-        function renderItems() {
-            const container = document.getElementById("itemListContainer");
-            container.innerHTML = ""; 
+            <div class="back-link" onclick="switchView('user-view')">← กลับหน้าหลัก</div>
+        </div>
+    </div>
 
-            let displayItems = globalItems;
-            if (currentColorFilter !== 'all') {
-                displayItems = globalItems.filter(item => item.name.includes(currentColorFilter));
-            }
+    <!-- ═══════════════════════════════════════
+         ADMIN DASHBOARD VIEW
+    ═══════════════════════════════════════ -->
+    <div id="admin-dashboard-view">
+        <div class="app-header" style="padding-bottom: 0;">
+            <div class="header-crown">
+                <div class="header-line"></div>
+                <div class="header-diamond"></div>
+                <div class="header-line"></div>
+            </div>
+            <h1>DASHBOARD</h1>
+            <p class="tagline">จัดการคลังสินค้าและรายงาน</p>
+        </div>
 
-            if (displayItems.length === 0) { 
-                container.innerHTML = `<div class="loading-text" style="color:var(--text-muted);">ไม่มีคอลเลกชันในหมวดหมู่นี้ครับ</div>`; 
-                return; 
-            }
+        <div class="dash-header">
+            <div class="dash-tabs">
+                <div class="dash-tab active" id="dtab-stock" onclick="switchAdminTab('stock')">📦 คลังสินค้า</div>
+                <div class="dash-tab" id="dtab-history" onclick="switchAdminTab('history')">📜 ประวัติบิล</div>
+                <div class="dash-tab" id="dtab-report" onclick="switchAdminTab('report')">✦ รายงาน</div>
+            </div>
+        </div>
 
-            displayItems.forEach((item) => {
-                const imgUrl = item.image ? item.image : `https://via.placeholder.com/150/0F0F0F/D4AF37?text=${item.name}`;
-                const isOutOfStock = item.stock <= 0;
-                container.innerHTML += `
-                    <div class="item-card" style="${isOutOfStock ? 'opacity: 0.6;' : ''}">
-                        <img src="${imgUrl}" alt="${item.name}">
-                        <div class="item-info">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-stock" style="${isOutOfStock ? 'color: var(--danger-color);' : 'color: var(--success-color); font-weight: 500;'}">
-                                ${isOutOfStock ? 'สินค้าหมด' : 'คงเหลือ: ' + item.stock + ' ' + item.unit}
-                            </div>
-                        </div>
-                        <input type="number" class="item-qty app-input" data-name="${item.name}" data-unit="${item.unit}" min="0" max="${item.stock}" placeholder="จำนวน" ${isOutOfStock ? 'disabled' : ''}>
+        <!-- TAB: Stock Management -->
+        <div class="dash-section active" id="dash-stock">
+            <div class="admin-form-card">
+                <div class="admin-form-title" id="adminFormTitle">✦ เพิ่ม / แก้ไข สินค้า</div>
+                <div class="grid-2">
+                    <div class="field-group">
+                        <label class="field-label">รหัสสินค้า (SKU)</label>
+                        <input type="text" id="itemId">
                     </div>
-                `;
-            });
-        }
+                    <div class="field-group">
+                        <label class="field-label">ชื่อรายการ</label>
+                        <input type="text" id="itemName">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="field-group">
+                        <label class="field-label">หน่วยนับ</label>
+                        <input type="text" id="itemUnit" value="ตัว">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">จำนวนสต๊อก</label>
+                        <input type="number" id="itemStock" min="0">
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">URL รูปภาพ</label>
+                    <input type="text" id="itemImage" placeholder="https://...">
+                </div>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-primary" onclick="saveItemAdmin()">💾 บันทึก</button>
+                    <button type="button" class="btn btn-ghost" onclick="clearAdminForm()">ล้างค่า</button>
+                </div>
+            </div>
 
-        function submitForm(event) {
-            event.preventDefault(); 
-            const submitBtn = document.getElementById("submitBtn");
-            const inputs = document.querySelectorAll('.app-input');
-            let itemsDataArray = [];
+            <div style="padding: 0 0 4px;">
+                <div class="section-label">สต๊อกสินค้าคงเหลือ</div>
+                <div id="adminStockContainer"></div>
+            </div>
+        </div>
 
-            inputs.forEach(input => {
-                let qty = parseInt(input.value);
-                if (qty > 0) itemsDataArray.push({ name: input.getAttribute('data-name'), qty: qty });
-            });
+        <!-- TAB: History -->
+        <div class="dash-section" id="dash-history">
+            <div id="adminHistoryContainer"></div>
+        </div>
 
-            if (itemsDataArray.length === 0) return alert("กรุณาระบุจำนวนสินค้าครับ");
+        <!-- TAB: Report -->
+        <div class="dash-section" id="dash-report">
+            <div class="filter-row">
+                <h3>✦ รายงานสินค้า</h3>
+                <select class="mini" id="reportMonthFilter" onchange="generateReport()">
+                    <option value="all">All Time</option>
+                </select>
+            </div>
 
-            const payload = {
-                action: "request_items", 
-                fullName: document.getElementById("fullName").value,
-                department: document.getElementById("department").value,
-                otherDepartment: document.getElementById("otherDepartment").value,
-                gender: document.getElementById("gender").value,
-                color: "ระบุจากรายการ", 
-                size: document.getElementById("size").value,
-                otherSize: document.getElementById("otherSize").value,
-                itemsDataArray: itemsDataArray
-            };
+            <div class="stat-row">
+                <div class="stat-card">
+                    <div class="stat-label">ยอดสั่งซื้อ</div>
+                    <div class="stat-val" id="reportTotalOrders">—<span class="stat-unit">บิล</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">สินค้าที่เบิก</div>
+                    <div class="stat-val" id="reportTotalItems">—<span class="stat-unit">ชิ้น</span></div>
+                </div>
+            </div>
 
-            submitBtn.innerText = "✦ กำลังดำเนินการ..."; submitBtn.disabled = true;
+            <div class="ai-insight" id="aiInsightBox">
+                ✦ <strong>AI Insight:</strong> กำลังวิเคราะห์ข้อมูล...
+            </div>
 
-            fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
-            .then(res => res.json())
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>รายการ</th>
+                        <th style="text-align:center">เดิม</th>
+                        <th style="text-align:center">เบิก</th>
+                        <th style="text-align:center">คงเหลือ</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody"></tbody>
+            </table>
+        </div>
+
+        <button type="button" class="btn btn-ghost" onclick="switchView('user-view')" 
+                style="margin-top:28px; border-color:var(--onyx-border);">
+            🚪 ออกจากระบบ
+        </button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════ -->
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzGHRECc0XPT2UnpsDUJUtys0QrbLldz1qvDfeD3zCcvw36YjTM2BGOwmCRScu3UWFM/exec";
+
+    let globalItems   = [];
+    let globalHistory = [];
+    let currentFilter = 'all';
+    let currentStep   = 1;
+
+    /* ─── INIT ─── */
+    window.onload = () => { fetchItems(); };
+
+    function fetchItems() {
+        fetch(API_URL)
+            .then(r => r.json())
             .then(data => {
-                if (data.status === "success") {
-                    alert("✦ บันทึกบิลเรียบร้อยแล้ว!");
-                    document.getElementById("uniformForm").reset(); 
-                    checkDepartment(); checkSize(); fetchItems(); 
-                }
+                globalItems   = data.items;
+                globalHistory = data.history;
+                renderProducts();
+                renderAdminStock(globalItems);
+                renderAdminHistory(globalHistory);
+                populateMonthFilter();
+                generateReport();
             })
-            .finally(() => { submitBtn.innerText = "ยืนยันการสั่งซื้อ"; submitBtn.disabled = false; });
-        }
+            .catch(e => console.error("Fetch error:", e));
+    }
 
-        // --- ส่วนของแอดมิน ---
-        function renderAdminStock(items) {
-            const container = document.getElementById("adminStockContainer");
-            container.innerHTML = "";
-            items.forEach(item => {
-                const itemJson = JSON.stringify(item).replace(/'/g, "&#39;");
-                container.innerHTML += `
-                <div class="admin-list-item">
-                    <div class="admin-item-header">
-                        <div style="font-weight: 600; color: var(--secondary-color);">[${item.id}] ${item.name}</div>
-                        <div class="action-btns">
-                            <button onclick='editItem(${itemJson})' class="btn-small btn-edit">✏️ แก้ไข</button>
-                            <button onclick="deleteItem('${item.id}', '${item.name}')" class="btn-small btn-delete">🗑️ ลบ</button>
-                        </div>
-                    </div>
-                    <div style="font-size: 13px; color: var(--text-muted);">สต๊อก: <strong style="color:var(--success-color); font-size: 15px;">${item.stock}</strong> ${item.unit}</div>
-                </div>`;
-            });
-        }
+    /* ─── TOAST ─── */
+    function showToast(msg, type = 'success') {
+        const c = document.getElementById('toastContainer');
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.innerHTML = (type === 'success' ? '✦ ' : '✕ ') + msg;
+        c.appendChild(t);
+        setTimeout(() => t.remove(), 3100);
+    }
 
-        function renderAdminHistory(historyRecords) {
-            const container = document.getElementById("adminHistoryContainer");
-            container.innerHTML = "";
-            if (historyRecords.length === 0) { container.innerHTML = '<div class="loading-text">ยังไม่มีประวัติการทำรายการ</div>'; return; }
+    /* ─── STEP NAVIGATION ─── */
+    function setStepIndicator(step) {
+        for (let i = 1; i <= 3; i++) {
+            const el = document.getElementById(`step-ind-${i}`);
+            const numEl = el.querySelector('.step-num span');
+            el.classList.remove('active', 'done');
+            el.querySelector('.step-num').innerHTML = `<span>${i}</span>`;
 
-            historyRecords.forEach(rec => {
-                let dateStr = new Date(rec.timestamp).toLocaleString('th-TH');
-                container.innerHTML += `
-                <div class="admin-list-item" style="border-left: 4px solid var(--primary-color);">
-                    <div class="admin-item-header">
-                        <div style="font-weight: 600; font-size: 14px; color: var(--secondary-color);">บิล: ${rec.orderId}</div>
-                        <button onclick="cancelOrder('${rec.orderId}', ${rec.rowIdx})" class="btn-small btn-delete">❌ ยกเลิกบิล</button>
-                    </div>
-                    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 5px;">📅 ${dateStr} | 👤 ${rec.name}</div>
-                    <div class="history-text">${rec.summary}</div>
-                </div>`;
-            });
-        }
-
-        function cancelOrder(orderId, rowIdx) {
-            if(!confirm(`⚠️ ยืนยันการยกเลิกบิล ${orderId} และคืนสินค้าเข้าสต๊อก?`)) return;
-            fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "cancel_order", orderId: orderId, rowIdx: rowIdx }) })
-            .then(res => res.json())
-            .then(data => { if(data.status === "success") { alert("✦ " + data.message); fetchItems(); } else { alert("❌ เกิดข้อผิดพลาด"); } });
-        }
-
-        // --- ระบบสรุปรายงาน AI (AI Report) ---
-        function populateMonthFilter() {
-            let select = document.getElementById("reportMonthFilter");
-            select.innerHTML = '<option value="all">ทั้งหมด (All Time)</option>';
-            let months = new Set();
-            globalHistory.forEach(rec => {
-                let d = new Date(rec.timestamp);
-                months.add(d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0'));
-            });
-            let sortedMonths = Array.from(months).sort().reverse();
-            const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-            sortedMonths.forEach(m => {
-                let [year, month] = m.split("-");
-                select.innerHTML += `<option value="${m}">${monthNames[parseInt(month) - 1]} ${year}</option>`;
-            });
-        }
-
-        function generateReport() {
-            const filter = document.getElementById("reportMonthFilter").value;
-            let itemStats = {};
-            globalItems.forEach(item => { itemStats[item.name] = { original: 0, deductedAllTime: 0, deductedPeriod: 0, remaining: parseInt(item.stock), unit: item.unit }; });
-
-            globalHistory.forEach(rec => {
-                if (rec.rawItems) {
-                    try { JSON.parse(rec.rawItems).forEach(i => { if (itemStats[i.name]) itemStats[i.name].deductedAllTime += parseInt(i.qty); }); } catch(e) {}
-                }
-            });
-
-            for (let key in itemStats) itemStats[key].original = itemStats[key].remaining + itemStats[key].deductedAllTime;
-
-            let filteredHistory = globalHistory.filter(rec => {
-                if (filter === "all") return true;
-                let d = new Date(rec.timestamp);
-                return (d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0')) === filter;
-            });
-
-            let totalOrders = filteredHistory.length;
-            let totalItemsDeducted = 0;
-
-            filteredHistory.forEach(rec => {
-                if (rec.rawItems) {
-                    try { JSON.parse(rec.rawItems).forEach(i => { if (itemStats[i.name]) { itemStats[i.name].deductedPeriod += parseInt(i.qty); totalItemsDeducted += parseInt(i.qty); } }); } catch(e) {}
-                }
-            });
-
-            document.getElementById("reportTotalOrders").innerHTML = `${totalOrders} <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">บิล</span>`;
-            document.getElementById("reportTotalItems").innerHTML = `${totalItemsDeducted} <span style="font-size: 14px; font-weight: normal; color: var(--text-main);">ชิ้น</span>`;
-
-            let tbody = document.getElementById("reportTableBody");
-            tbody.innerHTML = "";
-            let maxDeducted = 0; let topItem = "-";
-
-            for (let key in itemStats) {
-                let stat = itemStats[key];
-                if (stat.deductedPeriod > maxDeducted) { maxDeducted = stat.deductedPeriod; topItem = key; }
-                if (stat.original > 0) {
-                    tbody.innerHTML += `<tr><td style="font-weight: 500;">${key}</td><td style="text-align: center; color: var(--text-muted);">${stat.original}</td><td style="text-align: center; font-weight: 600; color: var(--danger-color);">${stat.deductedPeriod}</td><td style="text-align: center; font-weight: 600; color: var(--success-color);">${stat.remaining}</td></tr>`;
-                }
-            }
-
-            let aiBox = document.getElementById("aiInsightBox");
-            if (totalOrders === 0) { aiBox.innerHTML = "✦ <b>AI Insight:</b> ยังไม่มีข้อมูลการทำรายการครับ"; } 
-            else {
-                let insightText = `✦ <b>AI Insight:</b> สินค้ายอดนิยมสูงสุดคือ <b>${topItem}</b> มีการเบิกจ่ายไปแล้ว ${maxDeducted} ${itemStats[topItem].unit} `;
-                let topItemRemaining = itemStats[topItem] ? itemStats[topItem].remaining : 0;
-                if (topItemRemaining <= 10) insightText += `<br><span style="color:var(--danger-color);">⚠️ <b>คำแนะนำ:</b> สต๊อกเหลือน้อยกว่ากำหนด (${topItemRemaining} ชิ้น) ควรพิจารณาสั่งผลิตเพิ่มครับ</span>`;
-                else insightText += `<br>✅ สภาพคล่องของสต๊อกอยู่ในเกณฑ์มาตรฐานครับ`;
-                aiBox.innerHTML = insightText;
+            if (i < step) {
+                el.classList.add('done');
+                el.querySelector('.step-num').innerHTML = '';
+            } else if (i === step) {
+                el.classList.add('active');
             }
         }
+        // connectors
+        if (document.getElementById('conn-1-2'))
+            document.getElementById('conn-1-2').classList.toggle('done', step > 1);
+        if (document.getElementById('conn-2-3'))
+            document.getElementById('conn-2-3').classList.toggle('done', step > 2);
+    }
 
-        // --- UI & Admin Form ---
-        function editItem(item) {
-            document.getElementById("itemId").value = item.id;
-            document.getElementById("itemId").readOnly = true; 
-            document.getElementById("itemName").value = item.name;
-            document.getElementById("itemUnit").value = item.unit;
-            document.getElementById("itemStock").value = item.stock;
-            document.getElementById("itemImage").value = item.image;
+    function goToStep(n) {
+        document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`step-${n}`).classList.add('active');
+        currentStep = n;
+        setStepIndicator(n);
+    }
+
+    function goToStep2() {
+        const name  = document.getElementById('fullName').value.trim();
+        const dept  = document.getElementById('department').value;
+        const gen   = document.getElementById('gender').value;
+        const size  = document.getElementById('size').value;
+        if (!name || !dept || !gen || !size) {
+            showToast('กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+            return;
+        }
+        goToStep(2);
+    }
+
+    function goToStep3() {
+        buildConfirmPage();
+        goToStep(3);
+    }
+
+    /* ─── PRODUCT RENDERING ─── */
+    function filterColor(kw, el) {
+        currentFilter = kw;
+        document.querySelectorAll('.cf-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        renderProducts();
+    }
+
+    function renderProducts() {
+        const grid = document.getElementById('productGrid');
+        let items = currentFilter === 'all'
+            ? globalItems
+            : globalItems.filter(i => i.name.includes(currentFilter));
+
+        if (!items.length) {
+            grid.innerHTML = `<div class="empty-state">ไม่พบสินค้าในหมวดหมู่นี้</div>`;
+            return;
         }
 
-        function clearAdminForm() {
-            document.getElementById("itemId").value = "";
-            document.getElementById("itemId").readOnly = false;
-            document.getElementById("itemName").value = "";
-            document.getElementById("itemUnit").value = "ตัว";
-            document.getElementById("itemStock").value = "";
-            document.getElementById("itemImage").value = "";
+        grid.innerHTML = items.map(item => {
+            const oos  = item.stock <= 0;
+            const low  = item.stock > 0 && item.stock <= 10;
+            const img  = item.image || `https://via.placeholder.com/150/0D0D0D/C9A84C?text=${encodeURIComponent(item.name)}`;
+            const stockClass = oos ? 'stock-none' : (low ? 'stock-low' : 'stock-ok');
+            const stockText  = oos ? 'สินค้าหมด' : `คงเหลือ ${item.stock} ${item.unit}`;
+
+            return `
+            <div class="product-card ${oos ? 'out-of-stock' : ''}" id="pc-${item.id}" >
+                <img class="product-img" src="${img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/72/161616/C9A84C?text=IMG'">
+                <div class="product-info">
+                    <div class="product-name">${item.name}</div>
+                    <div class="product-stock ${stockClass}">
+                        <span class="stock-dot"></span>${stockText}
+                    </div>
+                </div>
+                <div class="qty-stepper">
+                    <button type="button" class="qty-btn" onclick="changeQty('${item.id}', -1)" ${oos?'disabled':''}>−</button>
+                    <input type="number" class="qty-input app-input"
+                        id="qty-${item.id}"
+                        data-name="${item.name}"
+                        data-unit="${item.unit}"
+                        data-id="${item.id}"
+                        min="0" max="${item.stock}" value="0"
+                        ${oos ? 'disabled' : ''}
+                        oninput="onQtyChange('${item.id}')">
+                    <button type="button" class="qty-btn" onclick="changeQty('${item.id}', 1)" ${oos?'disabled':''}>+</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function changeQty(id, delta) {
+        const inp = document.getElementById(`qty-${id}`);
+        if (!inp) return;
+        let val = (parseInt(inp.value) || 0) + delta;
+        val = Math.max(0, Math.min(parseInt(inp.max), val));
+        inp.value = val;
+        onQtyChange(id);
+    }
+
+    function onQtyChange(id) {
+        const inp = document.getElementById(`qty-${id}`);
+        const card = document.getElementById(`pc-${id}`);
+        if (!inp || !card) return;
+        const qty = parseInt(inp.value) || 0;
+        card.classList.toggle('has-qty', qty > 0);
+        updateCartSummary();
+    }
+
+    function updateCartSummary() {
+        const inputs = document.querySelectorAll('.app-input');
+        const items  = [];
+        inputs.forEach(inp => {
+            const qty = parseInt(inp.value) || 0;
+            if (qty > 0) items.push({ name: inp.dataset.name, qty, unit: inp.dataset.unit });
+        });
+
+        const summary = document.getElementById('cartSummary');
+        const list    = document.getElementById('cartItemsList');
+        const nextBtn = document.getElementById('step2NextBtn');
+
+        if (!items.length) {
+            summary.classList.remove('visible');
+            nextBtn.disabled = true;
+            return;
         }
 
-        function saveItemAdmin() {
-            const id = document.getElementById("itemId").value;
-            const name = document.getElementById("itemName").value;
-            if(!id || !name) return alert("กรุณากรอกรหัสและชื่อรายการ");
-            const payload = { action: "save_item", item: { id: id, name: name, unit: document.getElementById("itemUnit").value || "ตัว", stock: document.getElementById("itemStock").value || 0, image: document.getElementById("itemImage").value || "" } };
-            fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
-            .then(res => res.json()).then(data => { if(data.status === "success") { alert("✦ " + data.message); clearAdminForm(); fetchItems(); } });
+        summary.classList.add('visible');
+        nextBtn.disabled = false;
+        document.getElementById('cartTotalCount').textContent = `${items.reduce((s,i) => s+i.qty, 0)} ชิ้น`;
+        list.innerHTML = items.map(i =>
+            `<div class="cart-row"><span>${i.name}</span><strong>${i.qty} ${i.unit}</strong></div>`
+        ).join('');
+    }
+
+    /* ─── CONFIRM PAGE ─── */
+    function buildConfirmPage() {
+        const dept = document.getElementById('department').value === 'อื่นๆ'
+            ? document.getElementById('otherDepartment').value
+            : document.getElementById('department').value;
+        const size = document.getElementById('size').value === 'อื่นๆ'
+            ? document.getElementById('otherSize').value
+            : document.getElementById('size').value;
+
+        document.getElementById('confirmPersonal').innerHTML = `
+            <div class="confirm-block-title">✦ ข้อมูลผู้สั่ง</div>
+            <div class="confirm-row"><span class="confirm-key">ชื่อ-นามสกุล</span><span class="confirm-val">${document.getElementById('fullName').value}</span></div>
+            <div class="confirm-row"><span class="confirm-key">แผนก</span><span class="confirm-val">${dept}</span></div>
+            <div class="confirm-row"><span class="confirm-key">เพศ</span><span class="confirm-val">${document.getElementById('gender').value}</span></div>
+            <div class="confirm-row"><span class="confirm-key">ไซส์</span><span class="confirm-val">${size}</span></div>
+        `;
+
+        const inputs = document.querySelectorAll('.app-input');
+        let rows = '';
+        inputs.forEach(inp => {
+            const qty = parseInt(inp.value) || 0;
+            if (qty > 0) rows += `<div class="confirm-row"><span class="confirm-key">${inp.dataset.name}</span><span class="confirm-val">${qty} ${inp.dataset.unit}</span></div>`;
+        });
+        document.getElementById('confirmItems').innerHTML = `
+            <div class="confirm-block-title">✦ รายการสินค้า</div>${rows}`;
+    }
+
+    /* ─── SUBMIT ─── */
+    document.getElementById('uniformForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
+        const inputs = document.querySelectorAll('.app-input');
+        let itemsDataArray = [];
+
+        inputs.forEach(inp => {
+            const qty = parseInt(inp.value) || 0;
+            if (qty > 0) itemsDataArray.push({ name: inp.dataset.name, qty });
+        });
+
+        if (!itemsDataArray.length) { showToast('กรุณาเลือกสินค้าอย่างน้อย 1 รายการ', 'error'); return; }
+
+        const dept = document.getElementById('department').value === 'อื่นๆ'
+            ? document.getElementById('otherDepartment').value
+            : document.getElementById('department').value;
+        const size = document.getElementById('size').value === 'อื่นๆ'
+            ? document.getElementById('otherSize').value
+            : document.getElementById('size').value;
+
+        const payload = {
+            action: "request_items",
+            fullName:       document.getElementById('fullName').value,
+            department:     dept,
+            otherDepartment:'',
+            gender:         document.getElementById('gender').value,
+            color:          "ระบุจากรายการ",
+            size:           size,
+            otherSize:      '',
+            itemsDataArray
+        };
+
+        submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg> กำลังบันทึก...';
+        submitBtn.disabled = true;
+
+        fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.status === "success") {
+                document.getElementById('formCard').querySelector('.wizard-steps').style.display = 'none';
+                document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+                document.getElementById('successScreen').classList.add('active');
+                fetchItems();
+            }
+        })
+        .catch(() => showToast('เกิดข้อผิดพลาด กรุณาลองใหม่', 'error'))
+        .finally(() => {
+            submitBtn.innerHTML = '✦ ยืนยันการสั่งซื้อ';
+            submitBtn.disabled = false;
+        });
+    });
+
+    /* ─── RESET FORM ─── */
+    function resetForm() {
+        document.getElementById('uniformForm').reset();
+        document.getElementById('successScreen').classList.remove('active');
+        document.getElementById('formCard').querySelector('.wizard-steps').style.display = '';
+        checkDepartment(); checkSize();
+        currentFilter = 'all';
+        document.querySelectorAll('.cf-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+        goToStep(1);
+    }
+
+    /* ─── ADMIN ─── */
+    function renderAdminStock(items) {
+        const c = document.getElementById('adminStockContainer');
+        c.innerHTML = items.map(item => {
+            const badgeClass = item.stock <= 0 ? 'zero' : (item.stock <= 10 ? 'low' : '');
+            const json = JSON.stringify(item).replace(/'/g, "&#39;");
+            return `
+            <div class="stock-item">
+                <div class="stock-item-info">
+                    <div class="stock-item-id">${item.id}</div>
+                    <div class="stock-item-name">${item.name}</div>
+                </div>
+                <span class="stock-badge ${badgeClass}">${item.stock} ${item.unit}</span>
+                <div class="action-btns-sm">
+                    <button onclick='editItem(${json})' class="btn-xs">✏</button>
+                    <button onclick="deleteItem('${item.id}','${item.name}')" class="btn-xs del">🗑</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderAdminHistory(recs) {
+        const c = document.getElementById('adminHistoryContainer');
+        if (!recs.length) {
+            c.innerHTML = '<div class="empty-state">ยังไม่มีประวัติการทำรายการ</div>'; return;
+        }
+        c.innerHTML = recs.map(rec => {
+            const date = new Date(rec.timestamp).toLocaleString('th-TH');
+            return `
+            <div class="history-item">
+                <div class="history-item-header">
+                    <div>
+                        <div class="history-order-id">${rec.orderId}</div>
+                        <div class="history-meta">📅 ${date} · 👤 ${rec.name}</div>
+                    </div>
+                    <button onclick="cancelOrder('${rec.orderId}',${rec.rowIdx})" class="btn-xs del">ยกเลิกบิล</button>
+                </div>
+                <div class="history-summary">${rec.summary}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function cancelOrder(orderId, rowIdx) {
+        if (!confirm(`⚠️ ยืนยันยกเลิกบิล ${orderId} และคืนสินค้าเข้าสต๊อก?`)) return;
+        fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "cancel_order", orderId, rowIdx })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.status === "success") { showToast(data.message); fetchItems(); }
+            else showToast('เกิดข้อผิดพลาด', 'error');
+        });
+    }
+
+    /* ─── REPORT ─── */
+    function populateMonthFilter() {
+        let sel = document.getElementById('reportMonthFilter');
+        sel.innerHTML = '<option value="all">All Time</option>';
+        const months = new Set();
+        globalHistory.forEach(r => {
+            const d = new Date(r.timestamp);
+            months.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+        });
+        const mn = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+        [...months].sort().reverse().forEach(m => {
+            const [y, mo] = m.split('-');
+            sel.innerHTML += `<option value="${m}">${mn[parseInt(mo)-1]} ${y}</option>`;
+        });
+    }
+
+    function generateReport() {
+        const filter = document.getElementById('reportMonthFilter').value;
+        const stats  = {};
+        globalItems.forEach(item => {
+            stats[item.name] = { original:0, allTime:0, period:0, remaining: parseInt(item.stock), unit: item.unit };
+        });
+
+        globalHistory.forEach(rec => {
+            if (rec.rawItems) try { JSON.parse(rec.rawItems).forEach(i => { if(stats[i.name]) stats[i.name].allTime += parseInt(i.qty); }); } catch(e) {}
+        });
+        for (const k in stats) stats[k].original = stats[k].remaining + stats[k].allTime;
+
+        const filtered = globalHistory.filter(rec => {
+            if (filter === 'all') return true;
+            const d = new Date(rec.timestamp);
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` === filter;
+        });
+
+        let totalOrders = filtered.length, totalItems = 0;
+        filtered.forEach(rec => {
+            if (rec.rawItems) try { JSON.parse(rec.rawItems).forEach(i => { if(stats[i.name]) { stats[i.name].period += parseInt(i.qty); totalItems += parseInt(i.qty); } }); } catch(e) {}
+        });
+
+        document.getElementById('reportTotalOrders').innerHTML = `${totalOrders}<span class="stat-unit">บิล</span>`;
+        document.getElementById('reportTotalItems').innerHTML  = `${totalItems}<span class="stat-unit">ชิ้น</span>`;
+
+        let tbody = document.getElementById('reportTableBody');
+        tbody.innerHTML = '';
+        let maxD = 0, topItem = '-';
+        for (const k in stats) {
+            const s = stats[k];
+            if (s.period > maxD) { maxD = s.period; topItem = k; }
+            if (s.original > 0) {
+                tbody.innerHTML += `<tr>
+                    <td style="font-weight:600;">${k}</td>
+                    <td style="text-align:center;color:var(--cream-muted);">${s.original}</td>
+                    <td style="text-align:center;color:#C05050;font-weight:700;">${s.period}</td>
+                    <td style="text-align:center;color:#5CBD7A;font-weight:700;">${s.remaining}</td>
+                </tr>`;
+            }
         }
 
-        function deleteItem(itemId, itemName) {
-            if(!confirm(`ต้องการลบ "${itemName}" ออกจากระบบ?`)) return;
-            fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "delete_item", itemId: itemId }) })
-            .then(res => res.json()).then(data => { if(data.status === "success") { alert("🗑️ " + data.message); fetchItems(); } });
+        const ai = document.getElementById('aiInsightBox');
+        if (!totalOrders) {
+            ai.innerHTML = '✦ <strong>AI Insight:</strong> ยังไม่มีข้อมูลการทำรายการ';
+        } else {
+            const rem = stats[topItem]?.remaining || 0;
+            const warn = rem <= 10
+                ? `<br><span style="color:#E8A84C;">⚠ สต๊อก <strong>${topItem}</strong> เหลือ ${rem} ชิ้น — ควรพิจารณาสั่งผลิตเพิ่ม</span>`
+                : `<br>✅ สภาพคล่องสต๊อกอยู่ในเกณฑ์ดี`;
+            ai.innerHTML = `✦ <strong>AI Insight:</strong> สินค้ายอดนิยม: <strong>${topItem}</strong> เบิกจ่าย ${maxD} ชิ้น${warn}`;
         }
+    }
 
-        function switchAdminTab(tab) {
-            document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('#admin-dashboard-view > .content > div').forEach(el => el.style.display = 'none');
-            document.getElementById('tab-' + tab).classList.add('active');
-            document.getElementById('admin-section-' + tab).style.display = 'block';
+    /* ─── ADMIN STOCK EDIT ─── */
+    function editItem(item) {
+        document.getElementById('itemId').value    = item.id;
+        document.getElementById('itemId').readOnly = true;
+        document.getElementById('itemName').value  = item.name;
+        document.getElementById('itemUnit').value  = item.unit;
+        document.getElementById('itemStock').value = item.stock;
+        document.getElementById('itemImage').value = item.image;
+        switchAdminTab('stock');
+    }
+
+    function clearAdminForm() {
+        ['itemId','itemName','itemImage'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('itemId').readOnly = false;
+        document.getElementById('itemUnit').value  = 'ตัว';
+        document.getElementById('itemStock').value = '';
+    }
+
+    function saveItemAdmin() {
+        const id   = document.getElementById('itemId').value;
+        const name = document.getElementById('itemName').value;
+        if (!id || !name) { showToast('กรุณากรอกรหัสและชื่อสินค้า', 'error'); return; }
+        const payload = { action: "save_item", item: {
+            id, name,
+            unit:  document.getElementById('itemUnit').value  || 'ตัว',
+            stock: document.getElementById('itemStock').value || 0,
+            image: document.getElementById('itemImage').value || ''
+        }};
+        fetch(API_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(payload) })
+        .then(r => r.json())
+        .then(data => { if (data.status==="success") { showToast(data.message); clearAdminForm(); fetchItems(); } });
+    }
+
+    function deleteItem(itemId, itemName) {
+        if (!confirm(`ลบ "${itemName}" ออกจากระบบ?`)) return;
+        fetch(API_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({ action:"delete_item", itemId }) })
+        .then(r => r.json())
+        .then(data => { if (data.status==="success") { showToast(data.message); fetchItems(); } });
+    }
+
+    /* ─── UI HELPERS ─── */
+    function switchAdminTab(tab) {
+        document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`dtab-${tab}`).classList.add('active');
+        document.getElementById(`dash-${tab}`).classList.add('active');
+    }
+
+    function switchView(viewId) {
+        ['user-view','admin-login-view','admin-dashboard-view'].forEach(id => {
+            document.getElementById(id).style.display = 'none';
+        });
+        document.getElementById(viewId).style.display = 'block';
+        if (viewId === 'admin-dashboard-view') fetchItems();
+    }
+
+    function loginAdmin() {
+        if (document.getElementById('adminPass').value === 'adminhr0208') {
+            document.getElementById('adminPass').value = '';
+            switchView('admin-dashboard-view');
+        } else {
+            showToast('รหัสผ่านไม่ถูกต้อง', 'error');
         }
+    }
 
-        function checkDepartment() { document.getElementById("otherDeptDiv").style.display = document.getElementById("department").value === "อื่นๆ" ? "block" : "none"; }
-        function checkSize() { document.getElementById("otherSizeDiv").style.display = document.getElementById("size").value === "อื่นๆ" ? "block" : "none"; }
+    function checkDepartment() {
+        document.getElementById('otherDeptDiv').style.display =
+            document.getElementById('department').value === 'อื่นๆ' ? 'block' : 'none';
+    }
 
-        function switchView(viewId) {
-            document.getElementById("user-view").style.display = "none";
-            document.getElementById("admin-login-view").style.display = "none";
-            document.getElementById("admin-dashboard-view").style.display = "none";
-            document.getElementById(viewId).style.display = "block";
-            if (viewId === 'admin-dashboard-view') fetchItems();
-        }
+    function checkSize() {
+        document.getElementById('otherSizeDiv').style.display =
+            document.getElementById('size').value === 'อื่นๆ' ? 'block' : 'none';
+    }
+</script>
 
-        function loginAdmin() {
-            if (document.getElementById("adminPass").value === "adminhr0208") {
-                document.getElementById("adminPass").value = ""; 
-                switchView("admin-dashboard-view");
-            } else { alert("รหัสผ่านไม่ถูกต้อง"); }
-        }
-    </script>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
 </body>
 </html>
